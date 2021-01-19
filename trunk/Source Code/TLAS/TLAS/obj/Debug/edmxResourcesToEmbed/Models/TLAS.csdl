@@ -1,0 +1,982 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TLASPreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TLASPreEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AccessCards" EntityType="TLASPreModel.AccessCard" />
+    <EntitySet Name="Bays" EntityType="TLASPreModel.Bay" />
+    <EntitySet Name="Carriers" EntityType="TLASPreModel.Carrier" />
+    <EntitySet Name="Compartments" EntityType="TLASPreModel.Compartment" />
+    <EntitySet Name="Customers" EntityType="TLASPreModel.Customer" />
+    <EntitySet Name="Drivers" EntityType="TLASPreModel.Driver" />
+    <EntitySet Name="Orders" EntityType="TLASPreModel.Order" />
+    <EntitySet Name="OrderStatus" EntityType="TLASPreModel.OrderStatu" />
+    <EntitySet Name="Products" EntityType="TLASPreModel.Product" />
+    <EntitySet Name="Shifts" EntityType="TLASPreModel.Shift" />
+    <EntitySet Name="Shipments" EntityType="TLASPreModel.Shipment" />
+    <EntitySet Name="ShipmentCompartments" EntityType="TLASPreModel.ShipmentCompartment" />
+    <EntitySet Name="ShipmentStatus" EntityType="TLASPreModel.ShipmentStatu" />
+    <EntitySet Name="sysdiagrams" EntityType="TLASPreModel.sysdiagram" />
+    <EntitySet Name="tests" EntityType="TLASPreModel.test" />
+    <EntitySet Name="Trailers" EntityType="TLASPreModel.Trailer" />
+    <EntitySet Name="Vehicles" EntityType="TLASPreModel.Vehicle" />
+    <EntitySet Name="WeighBridges" EntityType="TLASPreModel.WeighBridge" />
+    <EntitySet Name="AccessCardHistories" EntityType="TLASPreModel.AccessCardHistory" />
+    <EntitySet Name="CarrierHistories" EntityType="TLASPreModel.CarrierHistory" />
+    <EntitySet Name="CompartmentHistories" EntityType="TLASPreModel.CompartmentHistory" />
+    <EntitySet Name="CustomerHistories" EntityType="TLASPreModel.CustomerHistory" />
+    <EntitySet Name="DriverHistories" EntityType="TLASPreModel.DriverHistory" />
+    <EntitySet Name="OrderHistories" EntityType="TLASPreModel.OrderHistory" />
+    <EntitySet Name="ProductHistories" EntityType="TLASPreModel.ProductHistory" />
+    <EntitySet Name="ShipmentCompartmentHistories" EntityType="TLASPreModel.ShipmentCompartmentHistory" />
+    <EntitySet Name="ShipmentHistories" EntityType="TLASPreModel.ShipmentHistory" />
+    <EntitySet Name="TrailerHistories" EntityType="TLASPreModel.TrailerHistory" />
+    <EntitySet Name="VehicleHistories" EntityType="TLASPreModel.VehicleHistory" />
+    <EntitySet Name="WeighBridgeHistories" EntityType="TLASPreModel.WeighBridgeHistory" />
+    <AssociationSet Name="FK_AccessCard_Bay" Association="TLASPreModel.FK_AccessCard_Bay">
+      <End Role="Bay" EntitySet="Bays" />
+      <End Role="AccessCard" EntitySet="AccessCards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_AccessCard" Association="TLASPreModel.FK_Shipment_AccessCard">
+      <End Role="AccessCard" EntitySet="AccessCards" />
+      <End Role="Shipment" EntitySet="Shipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bay_Product" Association="TLASPreModel.FK_Bay_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Bay" EntitySet="Bays" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_Bay" Association="TLASPreModel.FK_Shipment_Bay">
+      <End Role="Bay" EntitySet="Bays" />
+      <End Role="Shipment" EntitySet="Shipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Bay" Association="TLASPreModel.FK_ShipmentCompartment_Bay">
+      <End Role="Bay" EntitySet="Bays" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Driver_dbo_Carrier_CarrierID" Association="TLASPreModel.FK_dbo_Driver_dbo_Carrier_CarrierID">
+      <End Role="Carrier" EntitySet="Carriers" />
+      <End Role="Driver" EntitySet="Drivers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Vehicle_dbo_Carrier_CarrierID" Association="TLASPreModel.FK_dbo_Vehicle_dbo_Carrier_CarrierID">
+      <End Role="Carrier" EntitySet="Carriers" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Carrier" Association="TLASPreModel.FK_Order_Carrier">
+      <End Role="Carrier" EntitySet="Carriers" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Compartment_Trailer" Association="TLASPreModel.FK_Compartment_Trailer">
+      <End Role="Trailer" EntitySet="Trailers" />
+      <End Role="Compartment" EntitySet="Compartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Compartment" Association="TLASPreModel.FK_ShipmentCompartment_Compartment">
+      <End Role="Compartment" EntitySet="Compartments" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Order_dbo_Customer_CustomerID" Association="TLASPreModel.FK_dbo_Order_dbo_Customer_CustomerID">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Vehicle_dbo_Driver_DriverID" Association="TLASPreModel.FK_dbo_Vehicle_dbo_Driver_DriverID">
+      <End Role="Driver" EntitySet="Drivers" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Order_dbo_Product_ProductID" Association="TLASPreModel.FK_dbo_Order_dbo_Product_ProductID">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_OrderStatus" Association="TLASPreModel.FK_Order_OrderStatus">
+      <End Role="OrderStatu" EntitySet="OrderStatus" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Vehicle" Association="TLASPreModel.FK_Order_Vehicle">
+      <End Role="Vehicle" EntitySet="Vehicles" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_Order" Association="TLASPreModel.FK_Shipment_Order">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Shipment" EntitySet="Shipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_ShipmentStatus" Association="TLASPreModel.FK_Shipment_ShipmentStatus">
+      <End Role="ShipmentStatu" EntitySet="ShipmentStatus" />
+      <End Role="Shipment" EntitySet="Shipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Shipment" Association="TLASPreModel.FK_ShipmentCompartment_Shipment">
+      <End Role="Shipment" EntitySet="Shipments" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WeighBridge_Shipment" Association="TLASPreModel.FK_WeighBridge_Shipment">
+      <End Role="Shipment" EntitySet="Shipments" />
+      <End Role="WeighBridge" EntitySet="WeighBridges" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Trailer_dbo_Vehicle_VehicleID" Association="TLASPreModel.FK_dbo_Trailer_dbo_Vehicle_VehicleID">
+      <End Role="Vehicle" EntitySet="Vehicles" />
+      <End Role="Trailer" EntitySet="Trailers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="AccessCard">
+    <Key>
+      <PropertyRef Name="CardID" />
+    </Key>
+    <Property Name="CardID" Type="Int32" Nullable="false" />
+    <Property Name="BayID" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CardKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Bay" Relationship="TLASPreModel.FK_AccessCard_Bay" FromRole="AccessCard" ToRole="Bay" />
+    <NavigationProperty Name="Shipments" Relationship="TLASPreModel.FK_Shipment_AccessCard" FromRole="AccessCard" ToRole="Shipment" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityType Name="Bay">
+    <Key>
+      <PropertyRef Name="BayID" />
+    </Key>
+    <Property Name="BayID" Type="Int32" Nullable="false" />
+    <Property Name="Frequency" Type="Int32" Nullable="false" />
+    <Property Name="CurrQueue" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="AccessCards" Relationship="TLASPreModel.FK_AccessCard_Bay" FromRole="Bay" ToRole="AccessCard" />
+    <NavigationProperty Name="Product" Relationship="TLASPreModel.FK_Bay_Product" FromRole="Bay" ToRole="Product" />
+    <NavigationProperty Name="Shipments" Relationship="TLASPreModel.FK_Shipment_Bay" FromRole="Bay" ToRole="Shipment" />
+    <NavigationProperty Name="ShipmentCompartments" Relationship="TLASPreModel.FK_ShipmentCompartment_Bay" FromRole="Bay" ToRole="ShipmentCompartment" />
+  </EntityType>
+  <EntityType Name="Carrier">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+    </Key>
+    <Property Name="CarrierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Drivers" Relationship="TLASPreModel.FK_dbo_Driver_dbo_Carrier_CarrierID" FromRole="Carrier" ToRole="Driver" />
+    <NavigationProperty Name="Vehicles" Relationship="TLASPreModel.FK_dbo_Vehicle_dbo_Carrier_CarrierID" FromRole="Carrier" ToRole="Vehicle" />
+    <NavigationProperty Name="Orders" Relationship="TLASPreModel.FK_Order_Carrier" FromRole="Carrier" ToRole="Order" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Compartment">
+    <Key>
+      <PropertyRef Name="CompartmentID" />
+    </Key>
+    <Property Name="CompartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompartmentCode" Type="Int32" Nullable="false" />
+    <Property Name="Capactiy" Type="Int32" Nullable="false" />
+    <Property Name="TrailerID" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Trailer" Relationship="TLASPreModel.FK_Compartment_Trailer" FromRole="Compartment" ToRole="Trailer" />
+    <NavigationProperty Name="ShipmentCompartments" Relationship="TLASPreModel.FK_ShipmentCompartment_Compartment" FromRole="Compartment" ToRole="ShipmentCompartment" />
+    <Property Name="ChamberDipMM" Type="Double" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="TLASPreModel.FK_dbo_Order_dbo_Customer_CustomerID" FromRole="Customer" ToRole="Order" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+    <Property Name="CNIC" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="SignatureImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Driver">
+    <Key>
+      <PropertyRef Name="DriverID" />
+    </Key>
+    <Property Name="DriverID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DriverName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseIDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="LicenseEDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CNIC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Carrier" Relationship="TLASPreModel.FK_dbo_Driver_dbo_Carrier_CarrierID" FromRole="Driver" ToRole="Carrier" />
+    <NavigationProperty Name="Vehicles" Relationship="TLASPreModel.FK_dbo_Vehicle_dbo_Driver_DriverID" FromRole="Driver" ToRole="Vehicle" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="OrderQty" Type="Double" Nullable="false" />
+    <Property Name="RemainQty" Type="Double" />
+    <Property Name="CustomerID" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="OrderCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DeletedFlag" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CarrierID" Type="Int32" />
+    <Property Name="VehicleID" Type="Int32" />
+    <Property Name="OrderStatusID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDeliveryDT" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Carrier" Relationship="TLASPreModel.FK_Order_Carrier" FromRole="Order" ToRole="Carrier" />
+    <NavigationProperty Name="Customer" Relationship="TLASPreModel.FK_dbo_Order_dbo_Customer_CustomerID" FromRole="Order" ToRole="Customer" />
+    <NavigationProperty Name="Product" Relationship="TLASPreModel.FK_dbo_Order_dbo_Product_ProductID" FromRole="Order" ToRole="Product" />
+    <NavigationProperty Name="OrderStatu" Relationship="TLASPreModel.FK_Order_OrderStatus" FromRole="Order" ToRole="OrderStatu" />
+    <NavigationProperty Name="Vehicle" Relationship="TLASPreModel.FK_Order_Vehicle" FromRole="Order" ToRole="Vehicle" />
+    <NavigationProperty Name="Shipments" Relationship="TLASPreModel.FK_Shipment_Order" FromRole="Order" ToRole="Shipment" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityType Name="OrderStatu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="TLASPreModel.FK_Order_OrderStatus" FromRole="OrderStatu" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WeighOut" Type="Boolean" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="Bays" Relationship="TLASPreModel.FK_Bay_Product" FromRole="Product" ToRole="Bay" />
+    <NavigationProperty Name="Orders" Relationship="TLASPreModel.FK_dbo_Order_dbo_Product_ProductID" FromRole="Product" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Shift">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShiftName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StartTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EndTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Shipment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsManual" Type="Boolean" Nullable="false" />
+    <Property Name="AccessCardID" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DeletedFlag" Type="Boolean" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ShipmentStatusID" Type="Int32" Nullable="false" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="BayID" Type="Int32" />
+    <Property Name="BayName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VehicleCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DriverName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DriverCNIC" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShipmentDate" Type="DateTime" Precision="3" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AccessCard" Relationship="TLASPreModel.FK_Shipment_AccessCard" FromRole="Shipment" ToRole="AccessCard" />
+    <NavigationProperty Name="Bay" Relationship="TLASPreModel.FK_Shipment_Bay" FromRole="Shipment" ToRole="Bay" />
+    <NavigationProperty Name="Order" Relationship="TLASPreModel.FK_Shipment_Order" FromRole="Shipment" ToRole="Order" />
+    <NavigationProperty Name="ShipmentStatu" Relationship="TLASPreModel.FK_Shipment_ShipmentStatus" FromRole="Shipment" ToRole="ShipmentStatu" />
+    <NavigationProperty Name="ShipmentCompartments" Relationship="TLASPreModel.FK_ShipmentCompartment_Shipment" FromRole="Shipment" ToRole="ShipmentCompartment" />
+    <NavigationProperty Name="WeighBridge" Relationship="TLASPreModel.FK_WeighBridge_Shipment" FromRole="Shipment" ToRole="WeighBridge" />
+    <Property Name="RemarksManual" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ShipmentCompartment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderedQuantity" Type="Int32" />
+    <Property Name="PlannedQuantity" Type="Int32" />
+    <Property Name="ActualBCUQuantity" Type="Int32" />
+    <Property Name="AccessCardKey" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BayID" Type="Int32" Nullable="false" />
+    <Property Name="Product" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CompartmentID" Type="Int32" />
+    <Property Name="ShipmentID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="BayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CompartmentCode" Type="Int32" Nullable="false" />
+    <Property Name="Capacity" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Bay" Relationship="TLASPreModel.FK_ShipmentCompartment_Bay" FromRole="ShipmentCompartment" ToRole="Bay" />
+    <NavigationProperty Name="Compartment" Relationship="TLASPreModel.FK_ShipmentCompartment_Compartment" FromRole="ShipmentCompartment" ToRole="Compartment" />
+    <NavigationProperty Name="Shipment" Relationship="TLASPreModel.FK_ShipmentCompartment_Shipment" FromRole="ShipmentCompartment" ToRole="Shipment" />
+    <Property Name="PreDip" Type="Int32" />
+    <Property Name="PostDip" Type="Int32" />
+    <Property Name="Delta" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ShipmentStatu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Shipments" Relationship="TLASPreModel.FK_Shipment_ShipmentStatus" FromRole="ShipmentStatu" ToRole="Shipment" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="test">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="text" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Trailer">
+    <Key>
+      <PropertyRef Name="TrailerID" />
+    </Key>
+    <Property Name="TrailerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TrailerCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LoadingType" Type="Boolean" Nullable="false" />
+    <Property Name="VehicleID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Compartments" Relationship="TLASPreModel.FK_Compartment_Trailer" FromRole="Trailer" ToRole="Compartment" />
+    <NavigationProperty Name="Vehicle" Relationship="TLASPreModel.FK_dbo_Trailer_dbo_Vehicle_VehicleID" FromRole="Trailer" ToRole="Vehicle" />
+    <Property Name="BowserCalibrationCertificate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CertificateExpiryDate" Type="DateTime" Precision="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="VehicleID" />
+    </Key>
+    <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VehicleCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseIDate" Type="DateTime" Precision="0" />
+    <Property Name="LicenseEDate" Type="DateTime" Precision="0" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierID" Type="Int32" Nullable="false" />
+    <Property Name="DriverID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Carrier" Relationship="TLASPreModel.FK_dbo_Vehicle_dbo_Carrier_CarrierID" FromRole="Vehicle" ToRole="Carrier" />
+    <NavigationProperty Name="Driver" Relationship="TLASPreModel.FK_dbo_Vehicle_dbo_Driver_DriverID" FromRole="Vehicle" ToRole="Driver" />
+    <NavigationProperty Name="Orders" Relationship="TLASPreModel.FK_Order_Vehicle" FromRole="Vehicle" ToRole="Order" />
+    <NavigationProperty Name="Trailers" Relationship="TLASPreModel.FK_dbo_Trailer_dbo_Vehicle_VehicleID" FromRole="Vehicle" ToRole="Trailer" />
+    <Property Name="RowVersionInt" Type="Int32" />
+  </EntityType>
+  <EntityType Name="WeighBridge">
+    <Key>
+      <PropertyRef Name="ShipmentID" />
+    </Key>
+    <Property Name="TareWeight" Type="Int32" />
+    <Property Name="LoadedWeight" Type="Int32" />
+    <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ActualWeight" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ShipmentID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="VehicleCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ismanual" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Shipment" Relationship="TLASPreModel.FK_WeighBridge_Shipment" FromRole="WeighBridge" ToRole="Shipment" />
+  </EntityType>
+  <EntityType Name="AccessCardHistory">
+    <Key>
+      <PropertyRef Name="CardID" />
+      <PropertyRef Name="BayID" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="IsAssigned" />
+      <PropertyRef Name="LastActive" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CardID" Type="Int32" Nullable="false" />
+    <Property Name="BayID" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CardKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="CarrierHistory">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CarrierID" Type="Int32" Nullable="false" />
+    <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CompartmentHistory">
+    <Key>
+      <PropertyRef Name="CompartmentID" />
+      <PropertyRef Name="CompartmentCode" />
+      <PropertyRef Name="Capactiy" />
+      <PropertyRef Name="TrailerID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CompartmentID" Type="Int32" Nullable="false" />
+    <Property Name="CompartmentCode" Type="Int32" Nullable="false" />
+    <Property Name="Capactiy" Type="Int32" Nullable="false" />
+    <Property Name="TrailerID" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CustomerHistory">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="CustomerName" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ModifiedDate" />
+    </Key>
+    <Property Name="CustomerID" Type="Int32" Nullable="false" />
+    <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="DriverHistory">
+    <Key>
+      <PropertyRef Name="DriverID" />
+      <PropertyRef Name="DriverName" />
+      <PropertyRef Name="LicenseNo" />
+      <PropertyRef Name="LicenseIDate" />
+      <PropertyRef Name="LicenseEDate" />
+      <PropertyRef Name="CNIC" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ModifiedDate" />
+    </Key>
+    <Property Name="DriverID" Type="Int32" Nullable="false" />
+    <Property Name="DriverName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseIDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="LicenseEDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CNIC" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="OrderHistory">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderQty" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="OrderCode" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="DeletedFlag" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="OrderStatusID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="OrderQty" Type="Double" Nullable="false" />
+    <Property Name="RemainQty" Type="Double" />
+    <Property Name="CustomerID" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="OrderCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DeletedFlag" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CarrierID" Type="Int32" />
+    <Property Name="VehicleID" Type="Int32" />
+    <Property Name="OrderStatusID" Type="Int32" Nullable="false" />
+    <Property Name="OrderDeliveryDT" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ProductHistory">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="WeighOut" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WeighOut" Type="Boolean" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ShipmentCompartmentHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="BayID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ShipmentID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CompartmentCode" />
+      <PropertyRef Name="Capacity" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="OrderedQuantity" Type="Int32" />
+    <Property Name="PlannedQuantity" Type="Int32" />
+    <Property Name="ActualBCUQuantity" Type="Int32" />
+    <Property Name="AccessCardKey" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BayID" Type="Int32" Nullable="false" />
+    <Property Name="Product" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CompartmentID" Type="Int32" />
+    <Property Name="ShipmentID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="BayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CompartmentCode" Type="Int32" Nullable="false" />
+    <Property Name="Capacity" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ShipmentHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="IsManual" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ShipmentStatusID" />
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="IsManual" Type="Boolean" Nullable="false" />
+    <Property Name="AccessCardID" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DeletedFlag" Type="Boolean" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ShipmentStatusID" Type="Int32" Nullable="false" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="BayID" Type="Int32" />
+    <Property Name="BayName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VehicleCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DriverName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DriverCNIC" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShipmentDate" Type="DateTime" Precision="3" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TrailerHistory">
+    <Key>
+      <PropertyRef Name="TrailerID" />
+      <PropertyRef Name="TrailerCode" />
+      <PropertyRef Name="LoadingType" />
+      <PropertyRef Name="VehicleID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="TrailerID" Type="Int32" Nullable="false" />
+    <Property Name="TrailerCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LoadingType" Type="Boolean" Nullable="false" />
+    <Property Name="VehicleID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="VehicleHistory">
+    <Key>
+      <PropertyRef Name="VehicleID" />
+      <PropertyRef Name="VehicleCode" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="DriverID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="VehicleID" Type="Int32" Nullable="false" />
+    <Property Name="VehicleCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LicenseIDate" Type="DateTime" Precision="0" />
+    <Property Name="LicenseEDate" Type="DateTime" Precision="0" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="LastActive" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CarrierID" Type="Int32" Nullable="false" />
+    <Property Name="DriverID" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HistoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="WeighBridgeHistory">
+    <Key>
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="ShipmentID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="Ismanual" />
+    </Key>
+    <Property Name="TareWeight" Type="Int32" />
+    <Property Name="LoadedWeight" Type="Int32" />
+    <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ActualWeight" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ShipmentID" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="VehicleCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ismanual" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_AccessCard_Bay">
+    <End Type="TLASPreModel.Bay" Role="Bay" Multiplicity="1" />
+    <End Type="TLASPreModel.AccessCard" Role="AccessCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="AccessCard">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_AccessCard">
+    <End Type="TLASPreModel.AccessCard" Role="AccessCard" Multiplicity="0..1" />
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccessCard">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="AccessCardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bay_Product">
+    <End Type="TLASPreModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="TLASPreModel.Bay" Role="Bay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Bay">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_Bay">
+    <End Type="TLASPreModel.Bay" Role="Bay" Multiplicity="0..1" />
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Bay">
+    <End Type="TLASPreModel.Bay" Role="Bay" Multiplicity="1" />
+    <End Type="TLASPreModel.ShipmentCompartment" Role="ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Driver_dbo_Carrier_CarrierID">
+    <End Type="TLASPreModel.Carrier" Role="Carrier" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="TLASPreModel.Driver" Role="Driver" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Driver">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Vehicle_dbo_Carrier_CarrierID">
+    <End Type="TLASPreModel.Carrier" Role="Carrier" Multiplicity="1" />
+    <End Type="TLASPreModel.Vehicle" Role="Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Carrier">
+    <End Type="TLASPreModel.Carrier" Role="Carrier" Multiplicity="0..1" />
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Compartment_Trailer">
+    <End Type="TLASPreModel.Trailer" Role="Trailer" Multiplicity="1" />
+    <End Type="TLASPreModel.Compartment" Role="Compartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trailer">
+        <PropertyRef Name="TrailerID" />
+      </Principal>
+      <Dependent Role="Compartment">
+        <PropertyRef Name="TrailerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Compartment">
+    <End Type="TLASPreModel.Compartment" Role="Compartment" Multiplicity="0..1" />
+    <End Type="TLASPreModel.ShipmentCompartment" Role="ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compartment">
+        <PropertyRef Name="CompartmentID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="CompartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Order_dbo_Customer_CustomerID">
+    <End Type="TLASPreModel.Customer" Role="Customer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Vehicle_dbo_Driver_DriverID">
+    <End Type="TLASPreModel.Driver" Role="Driver" Multiplicity="1" />
+    <End Type="TLASPreModel.Vehicle" Role="Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Driver">
+        <PropertyRef Name="DriverID" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="DriverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Order_dbo_Product_ProductID">
+    <End Type="TLASPreModel.Product" Role="Product" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_OrderStatus">
+    <End Type="TLASPreModel.OrderStatu" Role="OrderStatu" Multiplicity="1" />
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderStatu">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="OrderStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Vehicle">
+    <End Type="TLASPreModel.Vehicle" Role="Vehicle" Multiplicity="0..1" />
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_Order">
+    <End Type="TLASPreModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_ShipmentStatus">
+    <End Type="TLASPreModel.ShipmentStatu" Role="ShipmentStatu" Multiplicity="1" />
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ShipmentStatu">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="ShipmentStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Shipment">
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="1" />
+    <End Type="TLASPreModel.ShipmentCompartment" Role="ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shipment">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="ShipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WeighBridge_Shipment">
+    <End Type="TLASPreModel.Shipment" Role="Shipment" Multiplicity="1" />
+    <End Type="TLASPreModel.WeighBridge" Role="WeighBridge" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Shipment">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="WeighBridge">
+        <PropertyRef Name="ShipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Trailer_dbo_Vehicle_VehicleID">
+    <End Type="TLASPreModel.Vehicle" Role="Vehicle" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="TLASPreModel.Trailer" Role="Trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Trailer">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

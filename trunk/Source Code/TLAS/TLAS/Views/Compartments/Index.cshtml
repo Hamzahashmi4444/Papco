@@ -1,0 +1,172 @@
+﻿@model IEnumerable<TLAS.Models.Compartment>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@{
+    ViewBag.Title = "Compartment";
+}
+<hr />
+<div class="container" >
+    <div class="col-md-6">
+        <h2>Compartment</h2>
+        <table class="table table-condensed table-bordered table-hover table-striped">
+            <thead>
+                <tr class="btn-primary">
+                    <th><b>Compartment Code</b></th>
+                    <th><b>Capacity</b></th>
+                    <th><b>Created By</b></th>
+                    <th><b>Created Date</b></th>
+                    <th><b>Modified By</b></th>
+                    <th><b>Modified Date</b></th>
+                </tr>
+            </thead>
+            <tbody id="compTable">
+                @foreach (var item in Model)
+                {
+                    <tr onclick="edit('@item.TrailerID','@item.CompartmentID','@item.CompartmentCode','@item.Capactiy','@item.CreatedDate','@item.Trailer.LoadingType','@item.ChamberDipMM');">
+                        <td>@item.CompartmentCode</td>
+                        <td>@item.Capactiy</td>
+
+                        <td>@item.CreatedBy</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.ModifiedBy</td>
+                        <td>@item.ModifiedDate</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("Create", "Compartments", FormMethod.Post))
+    {
+        <div class="col-md-6">
+            <div class="form-group ">
+                <br /><br /><br />
+                <div class="btn-group col-md-offset-4">
+                    <button type="button" class="btn btn-primary" onclick="clearTrailor();">New</button>
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
+                    <button type="button" class="btn btn-primary" id="delete" onclick="delRecCompartment();">Delete</button>
+                    <button type="button" class="btn btn-primary" id="traBtn" onclick="traNaviagte();">Bowser</button>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @Html.HiddenFor(m => Model.FirstOrDefault().Trailer.LoadingType, new { @id = "loadingType" })
+                @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                    @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @id = "createdDate", @Value = System.DateTime.Now })*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().CompartmentID, new { @id = "compId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().TrailerID, new { @id = "trailorId", @Value = ViewData["trailorId"] })
+                @Html.HiddenFor(m => Model.FirstOrDefault().Trailer.VehicleID, new { @id = "vehicleId", @Value = TempData.Peek("VehicleTempID").ToString() })
+                <div class="form-group">
+                    <label for="vehCode" class="col-md-4 control-label" title="Bowser Code">Bowser Code </label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => m.FirstOrDefault().Trailer.TrailerCode, new { htmlAttributes = new { @id = "trailerCode", @class = "form-control", @Value = ViewData["trailerCode"], @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="traCode" class="col-md-4 control-label">Compartment Code</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CompartmentCode, new { htmlAttributes = new { @class = "form-control", @id = "compCode", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CompartmentCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loadTypeSelect" class="col-md-4 control-label">Capacity</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().Capactiy, new { htmlAttributes = new { @class = "form-control", @id = "compCapacity" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().Capactiy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loadTypeSelect" class="col-md-4 control-label">Chamber Dip [MM]</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().ChamberDipMM, new { htmlAttributes = new { @class = "form-control", @id = "ChamberDipMM" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().ChamberDipMM, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#compId").val() == "") {
+            $("#delete").prop("disabled", true);
+            $("#save").prop("disabled", true);
+        }
+        else {
+            $("#delete").prop("disabled", false);
+            $("#save").prop("disabled", false);
+        }
+    });
+    function traNaviagte() {
+        var routeValue1 = $("#vehicleId").val();
+        var route = '@Url.Action("Index","Trailers")' + '/Index/' + routeValue1;
+        window.location.href = route;
+        //$(this).attr("href", route);
+    }
+    function edit(trailorId, compId, compCode, compCapacity, createdDate, loadingType, ChamberDipMM) {
+
+        $("#trailorId").val(trailorId);
+        $("#compId").val(compId);
+        $("#compCode").val(compCode);
+        $("#compCapacity").val(compCapacity);
+        //$("#createdDate").val(createdDate);
+        $("#loadingType").val(loadingType);
+        $("#ChamberDipMM").val(ChamberDipMM);
+        $("#save").prop("disabled", false);
+    }
+    function clearTrailor() {
+        if ($("#loadingType").val() == "onclick" || $("#loadingType").val() == "True")
+        {
+            var countTr = $('#compTable tr').length;
+            countTr = countTr + 1;
+            $("#save").prop("disabled", false);
+            $("#compId").val(0);
+            $("#compCode").val(countTr);
+            $("#compCapacity").val("");
+        }
+        else
+        {
+            if($('#compTable tr').length >=1)
+            {
+                $("#save").prop("disabled", true);
+            }
+            else
+            {
+                var countTr = $('#compTable tr').length;
+                countTr = countTr + 1;
+                $("#save").prop("disabled", false);
+                $("#compId").val(0);
+                $("#compCode").val(countTr);
+                $("#compCapacity").val("");
+
+            }
+        }
+        
+        //$("#createdDate").val(d.toString());
+    }
+    function delRecCompartment() {
+        var localTraId = $("#trailorId").val();
+        var localId = $('#compTable tr').length;
+       // var localName = $("#compCode").val();
+
+        var r = confirm("Do you want to delete compartment#: " + localId);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                //url: "/Trailers/Delete/" + localId + "?vehId=" + localVehId,
+                url: '@Url.Action("Delete", "Compartments")',
+                data: { code: localId, traId: localTraId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+
+
+
+
+

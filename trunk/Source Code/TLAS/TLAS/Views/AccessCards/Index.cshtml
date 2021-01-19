@@ -1,0 +1,233 @@
+﻿@model PagedList.IPagedList<TLAS.ViewModel.AccessCardViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+@{
+    ViewBag.Title = "AccessCard";
+}
+<hr />
+<div class="container">
+    <div class="col-md-6">
+        <h2>AccessCard</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "AccessCards", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Card ID", @placeholder = "Card ID" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-23px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b>@Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Key", "Index", new { sortOrder = ViewBag.KeySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("BayID", "Index", new { sortOrder = ViewBag.BayIdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("IsAssigned", "Index", new { sortOrder = ViewBag.IsAssignedSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var rowV = Convert.ToBase64String(item.RowVersion);
+                        <tr value="@item.CardID" style="color: @(item.Active == false ? "red" : "black")" onclick="edit('@item.CardID','@item.CardKey','@item.BayID','@item.Active','@item.Remarks','@item.IsAssigned','@rowV');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CardKey)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BayID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsAssigned)
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Create", "AccessCards", FormMethod.Post, new { role = "form", @id = "formAccessCard" }))
+    {
+        <div class="col-md-6">
+            <br /><br />
+            @Html.HiddenFor(model => Model.FirstOrDefault().RowVersion, new { @class = "form-control", @id = "hdnRowVersion" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Label(" ", new { @id = "errorMessagesOnSave", Style = "color: red" })
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-4">
+                    <button type="button" class="btn btn-primary" onclick="clearNew();">New</button>
+                    <button type="submit" class="btn btn-primary" name="save" value="save" id="save">Save</button>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @Html.HiddenFor(m => Model.FirstOrDefault().IsAssigned, new { @id = "isAssigned" })
+                <div class="form-group">
+                    <label for="address" class="col-md-4 control-label">Card ID</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CardID, new { htmlAttributes = new { @class = "form-control", @id = "cardID", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CardID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-4 control-label">Card Key</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CardKey, new { htmlAttributes = new { @class = "form-control", @id = "cardKey" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CardKey, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="compSelect" class="col-md-4 control-label">Bay No</label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(x => Model.FirstOrDefault().BayID, (SelectList)ViewBag.Bays, new { @class = "form-control", @id = "bayName" })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().BayID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Active</label>
+                    <div class="col-md-4">
+                        @Html.CheckBoxFor(m => Model.FirstOrDefault().Active, new { @id = "active", htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label(" Blacklist")
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-4 control-label">Remarks</label>
+                    <div class="col-md-4">
+                        @Html.TextAreaFor(m => Model.FirstOrDefault().Remarks, new { @class = "form-control", @id = "remarks", cols = 35, @rows = 4 })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var val = @Model.FirstOrDefault().BayID;
+        $("#bayName").val(val)
+
+        $("#formAccessCard").submit(function (e) {
+                                e.preventDefault(); //prevent the default action
+                                var isAssigned = $("#isAssigned").val();
+                                var isActive = $("#active").is(':checked').toString();
+                                if ((isActive == "false") && (isAssigned == "true")) {
+                $("#errorMessagesOnSave").text("Card is already assigned");
+                                }
+                                else
+                                {
+                $("#errorMessagesOnSave").text(" ");
+                $("#formAccessCard").unbind('submit').submit();
+                                }
+                            });
+                        });
+
+
+
+    $("#SearchString").autocomplete({
+
+                        source: function (request, response) {
+
+                                var customer = new Array();
+
+            $.ajax({
+                                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoComplete", "AccessCards"))",
+                data: { "term": request.term },
+            success: function (data) {
+                                        for (var i = 0; i < data.length ; i++) {
+                                            customer[i] = { label:data[i] };
+                                        }
+                                    }
+                                });
+                                response(customer);
+                            }
+                        });
+
+    function edit(cardID, cardKey, bayID, active, remarks, isAssigned,RowVersion) {
+        $("#errorMessagesOnSave").text(" ");
+        $("#cardID").val(cardID)
+        $("#cardKey").val(cardKey)
+        $("#bayName").val(bayID)
+        $("#remarks").val(remarks)
+        $("#hdnRowVersion").val(RowVersion)
+        if (active == "onclick") {
+            $("#active").prop('checked', true);
+                            }
+                            else {
+            $("#active").prop('checked', false);
+                            }
+                            if (isAssigned == "onclick") {
+            $("#isAssigned").val(true);
+                            }
+                            else {
+            $("#isAssigned").val(false);
+                            }
+                        }
+    function clearNew() {
+        debugger;
+        $("#save").prop("disabled", false);
+        $("#cardID").val(0);
+        $("#bayName").val("");
+        $("#cardKey").val(0);
+        $("#remarks").val("");
+                        }
+                        function deleteRecord() {
+        @*var localId = $("#carrId").val();
+        var localName = $("#name").val();
+        var r = confirm("Do you want to delete: "+localName);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Carriers")',
+                data: { id: localId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }*@
+    }
+</script>
+
+
+
+
+

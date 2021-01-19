@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TLASPreModelStoreContainer" CdmEntityContainer="TLASPreEntities">
+    <EntitySetMapping Name="AccessCards">
+      <EntityTypeMapping TypeName="TLASPreModel.AccessCard">
+        <MappingFragment StoreEntitySet="AccessCard">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CardKey" ColumnName="CardKey" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bays">
+      <EntityTypeMapping TypeName="TLASPreModel.Bay">
+        <MappingFragment StoreEntitySet="Bay">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CurrQueue" ColumnName="CurrQueue" />
+          <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Carriers">
+      <EntityTypeMapping TypeName="TLASPreModel.Carrier">
+        <MappingFragment StoreEntitySet="Carrier">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CarrierEmail" ColumnName="CarrierEmail" />
+          <ScalarProperty Name="CarrierMobile" ColumnName="CarrierMobile" />
+          <ScalarProperty Name="CarrierPhone" ColumnName="CarrierPhone" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="CarrierAddress" ColumnName="CarrierAddress" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Compartments">
+      <EntityTypeMapping TypeName="TLASPreModel.Compartment">
+        <MappingFragment StoreEntitySet="Compartment">
+          <ScalarProperty Name="ChamberDipMM" ColumnName="ChamberDipMM" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TrailerID" ColumnName="TrailerID" />
+          <ScalarProperty Name="Capactiy" ColumnName="Capactiy" />
+          <ScalarProperty Name="CompartmentCode" ColumnName="CompartmentCode" />
+          <ScalarProperty Name="CompartmentID" ColumnName="CompartmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="TLASPreModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="SignatureImagePath" ColumnName="SignatureImagePath" />
+          <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+          <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
+          <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Drivers">
+      <EntityTypeMapping TypeName="TLASPreModel.Driver">
+        <MappingFragment StoreEntitySet="Driver">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+          <ScalarProperty Name="LicenseEDate" ColumnName="LicenseEDate" />
+          <ScalarProperty Name="LicenseIDate" ColumnName="LicenseIDate" />
+          <ScalarProperty Name="LicenseNo" ColumnName="LicenseNo" />
+          <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+          <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="TLASPreModel.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="OrderDeliveryDT" ColumnName="OrderDeliveryDT" />
+          <ScalarProperty Name="OrderStatusID" ColumnName="OrderStatusID" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedFlag" ColumnName="DeletedFlag" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="RemainQty" ColumnName="RemainQty" />
+          <ScalarProperty Name="OrderQty" ColumnName="OrderQty" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderStatus">
+      <EntityTypeMapping TypeName="TLASPreModel.OrderStatu">
+        <MappingFragment StoreEntitySet="OrderStatus">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="TLASPreModel.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="WeighOut" ColumnName="WeighOut" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Shifts">
+      <EntityTypeMapping TypeName="TLASPreModel.Shift">
+        <MappingFragment StoreEntitySet="Shifts">
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="ShiftName" ColumnName="ShiftName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Shipments">
+      <EntityTypeMapping TypeName="TLASPreModel.Shipment">
+        <MappingFragment StoreEntitySet="Shipment">
+          <ScalarProperty Name="RemarksManual" ColumnName="RemarksManual" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="DriverCNIC" ColumnName="DriverCNIC" />
+          <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="BayName" ColumnName="BayName" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ShipmentStatusID" ColumnName="ShipmentStatusID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedFlag" ColumnName="DeletedFlag" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="AccessCardID" ColumnName="AccessCardID" />
+          <ScalarProperty Name="IsManual" ColumnName="IsManual" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentCompartments">
+      <EntityTypeMapping TypeName="TLASPreModel.ShipmentCompartment">
+        <MappingFragment StoreEntitySet="ShipmentCompartment">
+          <ScalarProperty Name="Delta" ColumnName="Delta" />
+          <ScalarProperty Name="PostDip" ColumnName="PostDip" />
+          <ScalarProperty Name="PreDip" ColumnName="PreDip" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="CompartmentCode" ColumnName="CompartmentCode" />
+          <ScalarProperty Name="BayName" ColumnName="BayName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ShipmentID" ColumnName="ShipmentID" />
+          <ScalarProperty Name="CompartmentID" ColumnName="CompartmentID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Product" ColumnName="Product" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="AccessCardKey" ColumnName="AccessCardKey" />
+          <ScalarProperty Name="ActualBCUQuantity" ColumnName="ActualBCUQuantity" />
+          <ScalarProperty Name="PlannedQuantity" ColumnName="PlannedQuantity" />
+          <ScalarProperty Name="OrderedQuantity" ColumnName="OrderedQuantity" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentStatus">
+      <EntityTypeMapping TypeName="TLASPreModel.ShipmentStatu">
+        <MappingFragment StoreEntitySet="ShipmentStatus">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="TLASPreModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tests">
+      <EntityTypeMapping TypeName="TLASPreModel.test">
+        <MappingFragment StoreEntitySet="test">
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trailers">
+      <EntityTypeMapping TypeName="TLASPreModel.Trailer">
+        <MappingFragment StoreEntitySet="Trailer">
+          <ScalarProperty Name="CertificateExpiryDate" ColumnName="CertificateExpiryDate" />
+          <ScalarProperty Name="BowserCalibrationCertificate" ColumnName="BowserCalibrationCertificate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="LoadingType" ColumnName="LoadingType" />
+          <ScalarProperty Name="TrailerCode" ColumnName="TrailerCode" />
+          <ScalarProperty Name="TrailerID" ColumnName="TrailerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehicles">
+      <EntityTypeMapping TypeName="TLASPreModel.Vehicle">
+        <MappingFragment StoreEntitySet="Vehicle">
+          <ScalarProperty Name="RowVersionInt" ColumnName="RowVersionInt" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="LicenseEDate" ColumnName="LicenseEDate" />
+          <ScalarProperty Name="LicenseIDate" ColumnName="LicenseIDate" />
+          <ScalarProperty Name="LicenseNo" ColumnName="LicenseNo" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WeighBridges">
+      <EntityTypeMapping TypeName="TLASPreModel.WeighBridge">
+        <MappingFragment StoreEntitySet="WeighBridge">
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Ismanual" ColumnName="Ismanual" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ShipmentID" ColumnName="ShipmentID" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ActualWeight" ColumnName="ActualWeight" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LoadedWeight" ColumnName="LoadedWeight" />
+          <ScalarProperty Name="TareWeight" ColumnName="TareWeight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessCardHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.AccessCardHistory">
+        <MappingFragment StoreEntitySet="AccessCardHistory">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CardKey" ColumnName="CardKey" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarrierHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.CarrierHistory">
+        <MappingFragment StoreEntitySet="CarrierHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CarrierEmail" ColumnName="CarrierEmail" />
+          <ScalarProperty Name="CarrierMobile" ColumnName="CarrierMobile" />
+          <ScalarProperty Name="CarrierPhone" ColumnName="CarrierPhone" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="CarrierAddress" ColumnName="CarrierAddress" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompartmentHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.CompartmentHistory">
+        <MappingFragment StoreEntitySet="CompartmentHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TrailerID" ColumnName="TrailerID" />
+          <ScalarProperty Name="Capactiy" ColumnName="Capactiy" />
+          <ScalarProperty Name="CompartmentCode" ColumnName="CompartmentCode" />
+          <ScalarProperty Name="CompartmentID" ColumnName="CompartmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.CustomerHistory">
+        <MappingFragment StoreEntitySet="CustomerHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+          <ScalarProperty Name="CustomerMobile" ColumnName="CustomerMobile" />
+          <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DriverHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.DriverHistory">
+        <MappingFragment StoreEntitySet="DriverHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+          <ScalarProperty Name="LicenseEDate" ColumnName="LicenseEDate" />
+          <ScalarProperty Name="LicenseIDate" ColumnName="LicenseIDate" />
+          <ScalarProperty Name="LicenseNo" ColumnName="LicenseNo" />
+          <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+          <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.OrderHistory">
+        <MappingFragment StoreEntitySet="OrderHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="OrderDeliveryDT" ColumnName="OrderDeliveryDT" />
+          <ScalarProperty Name="OrderStatusID" ColumnName="OrderStatusID" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedFlag" ColumnName="DeletedFlag" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="RemainQty" ColumnName="RemainQty" />
+          <ScalarProperty Name="OrderQty" ColumnName="OrderQty" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.ProductHistory">
+        <MappingFragment StoreEntitySet="ProductHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="WeighOut" ColumnName="WeighOut" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentCompartmentHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.ShipmentCompartmentHistory">
+        <MappingFragment StoreEntitySet="ShipmentCompartmentHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="CompartmentCode" ColumnName="CompartmentCode" />
+          <ScalarProperty Name="BayName" ColumnName="BayName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ShipmentID" ColumnName="ShipmentID" />
+          <ScalarProperty Name="CompartmentID" ColumnName="CompartmentID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Product" ColumnName="Product" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="AccessCardKey" ColumnName="AccessCardKey" />
+          <ScalarProperty Name="ActualBCUQuantity" ColumnName="ActualBCUQuantity" />
+          <ScalarProperty Name="PlannedQuantity" ColumnName="PlannedQuantity" />
+          <ScalarProperty Name="OrderedQuantity" ColumnName="OrderedQuantity" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipmentHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.ShipmentHistory">
+        <MappingFragment StoreEntitySet="ShipmentHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="DriverCNIC" ColumnName="DriverCNIC" />
+          <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="BayName" ColumnName="BayName" />
+          <ScalarProperty Name="BayID" ColumnName="BayID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ShipmentStatusID" ColumnName="ShipmentStatusID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeletedFlag" ColumnName="DeletedFlag" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="AccessCardID" ColumnName="AccessCardID" />
+          <ScalarProperty Name="IsManual" ColumnName="IsManual" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrailerHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.TrailerHistory">
+        <MappingFragment StoreEntitySet="TrailerHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="LoadingType" ColumnName="LoadingType" />
+          <ScalarProperty Name="TrailerCode" ColumnName="TrailerCode" />
+          <ScalarProperty Name="TrailerID" ColumnName="TrailerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.VehicleHistory">
+        <MappingFragment StoreEntitySet="VehicleHistory">
+          <ScalarProperty Name="HistoryType" ColumnName="HistoryType" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="LicenseEDate" ColumnName="LicenseEDate" />
+          <ScalarProperty Name="LicenseIDate" ColumnName="LicenseIDate" />
+          <ScalarProperty Name="LicenseNo" ColumnName="LicenseNo" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WeighBridgeHistories">
+      <EntityTypeMapping TypeName="TLASPreModel.WeighBridgeHistory">
+        <MappingFragment StoreEntitySet="WeighBridgeHistory">
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Ismanual" ColumnName="Ismanual" />
+          <ScalarProperty Name="VehicleCode" ColumnName="VehicleCode" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ShipmentID" ColumnName="ShipmentID" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ActualWeight" ColumnName="ActualWeight" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LoadedWeight" ColumnName="LoadedWeight" />
+          <ScalarProperty Name="TareWeight" ColumnName="TareWeight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

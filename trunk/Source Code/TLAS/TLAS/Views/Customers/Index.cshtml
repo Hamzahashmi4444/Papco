@@ -1,0 +1,299 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Customer>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+@{
+    ViewBag.Title = "Customer";
+}
+<hr />
+<div class="container">
+    <div class="col-md-8">
+        <h2>Customer</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Customer Name", @placeholder = "Customer Name" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-23px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b title="Sort By CustomerID">@Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Customer Name">@Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Phone">@Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.PhoneSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created By">@Html.ActionLink("Created By", "Index", new { sortOrder = ViewBag.CreatedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created Date">@Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified By">@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified Date">@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var rowV = Convert.ToBase64String(item.RowVersion);
+                        <tr value="@item.CustomerID" onclick="edit('@item.CustomerID','@item.CustomerName','@item.CustomerAddress','@item.ContactName','@item.CustomerPhone','@item.CustomerMobile','@item.CustomerEmail','@rowV','@item.CNIC', '@item.SignatureImagePath');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerPhone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            @*, PagedListRenderOptions.OnlyShowFivePagesAtATime*@
+        </div>
+    </div>
+
+    @*@{
+            DateTime createdDate;
+            try
+            {
+                createdDate = Model.FirstOrDefault().CreatedDate;
+            }
+            catch
+            {
+                createdDate = System.DateTime.Now;
+            }
+        }*@
+
+    @using (Html.BeginForm("Create", "Customers", FormMethod.Post, new { role = "form", @id = "formCustomer", enctype = "multipart/form-data" }))
+    {
+        <div class="col-md-4">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Label(" ", new { @id = "errorMessagesOnSave", Style = "color: red" })
+            @Html.HiddenFor(model => Model.FirstOrDefault().RowVersion, new { @class = "form-control", @id = "hdnRowVersion" })
+            <br /><br /><br />
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-4">
+                    <button type="button" class="btn btn-primary" onclick="clearNew();">New</button>
+                    <button type="submit" class="btn btn-primary" name="save" value="save" id="save">Save</button>
+                    @*<button type="button" class="btn btn-primary" id="delete" onclick="deleteRecord();" disabled>Delete</button>*@
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                        @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @Value = createdDate })*@
+                    @Html.HiddenFor(m => Model.FirstOrDefault().CustomerID, new { @id = "custId" })
+                    @*@Html.LabelFor("","CustomerName", htmlAttributes: new { @class = "col-md-4 control-label" })*@
+                    <label for="custName" class="col-md-4 control-label">Customer Name<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CustomerName, new { htmlAttributes = new { @class = "form-control", @id = "name" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CustomerName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-4 control-label">Address</label>
+                    <div class="col-md-8">
+                        @*@Html.EditorFor(m => Model.FirstOrDefault().CustomerAddress, new { htmlAttributes = new { @class = "form-control", @id = "address" } })*@
+                        @Html.TextAreaFor(m => Model.FirstOrDefault().CustomerAddress, new { @class = "form-control", @id = "address", cols = 35, @rows = 4 })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CustomerAddress, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contPerson" class="col-md-4 control-label">Contact Person</label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().ContactName, new { htmlAttributes = new { @class = "form-control", @id = "cPerson" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().ContactName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="col-md-4 control-label">Phone<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CustomerPhone, new { htmlAttributes = new { @class = "form-control", @id = "phone" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CustomerPhone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobile" class="col-md-4 control-label">Mobile</label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CustomerMobile, new { htmlAttributes = new { @class = "form-control", @id = "mobile" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CustomerMobile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-md-4 control-label">Email</label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CustomerEmail, new { htmlAttributes = new { @class = "form-control", @id = "email" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CustomerEmail, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cnic" class="col-md-4 control-label">CNIC</label>
+
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CNIC, new { htmlAttributes = new { @class = "form-control", @id = "cnic", maxlength = "13" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CNIC, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signatureimagepath" class="col-md-4 control-label">Customer Signature(s)</label>
+                    <div class="col-md-8">
+                        <a id="signatureimagepathhref" href="@Model.FirstOrDefault().SignatureImagePath" target="_blank" style="display: inline-block; width: 50px; height: 50px;"><img src="@Model.FirstOrDefault().SignatureImagePath" id="signatureimagepath" width="200" height="100" /></a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label"></label>
+                    <div class="col-md-8">
+                        <input type="file" name="file" title="Upload Signature" id="file" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoComplete", "Customers"))",
+                data: { "term": request.term },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.length ; i++) {
+                    customer[i] = { label:data[i] };
+                }
+            }
+        });
+    response(customer);
+    }
+    });
+    $(document).ready(function () {
+
+        $("#formCustomer").submit(function (e) {
+            var isValid = $('#formCustomer').valid();
+            if (!isValid) {
+                e.preventDefault(); //prevent the default action
+            }
+            else {
+                e.preventDefault();
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("UniqueName", "Customers")',
+                    data: {
+                        Name: $("#name").val(),
+                        Id: $("#custId").val()
+                    },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    if (data == false) {
+                        $("#errorMessagesOnSave").text("Customer Name is not unique");
+                        return;
+                    }
+                    else {
+                        $("#errorMessagesOnSave").text(" ");
+                        $("#formCustomer").unbind('submit').submit();
+                    }
+
+                })
+            }
+
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if ($("#custId").val() == "") {
+            $("#save").prop("disabled", true);
+            //$("#delete").prop("disabled", true);
+        }
+        else {
+            $("#save").prop("disabled", false);
+            // $("#delete").prop("disabled", false);
+        }
+    });
+    function edit(id, name, address, cPerson, phone, mobile, email, RowVersion, cnic, signatureimagepath) {
+        $("#custId").val(id)
+        $("#name").val(name)
+        $("#address").val(address)
+        $("#cPerson").val(cPerson)
+        $("#phone").val(phone)
+        $("#mobile").val(mobile)
+        $("#email").val(email)
+        $("#cnic").val(cnic)
+        $("#signatureimagepath").attr('src', signatureimagepath);
+        $("#signatureimagepathhref").attr('href', signatureimagepath);
+        $("#hdnRowVersion").val(RowVersion)
+    }
+    function clearNew() {
+        $("#save").prop("disabled", false);
+        $("#custId").val(0)
+        $("#name").val("")
+        $("#address").val("")
+        $("#cPerson").val("")
+        $("#phone").val("")
+        $("#mobile").val("")
+        $("#email").val("")
+        $("#cnic").val("")
+        $("#signatureimagepath").removeAttr('src')
+        $("#signatureimagepathhref").removeAttr('href')
+    }
+    function deleteRecord() {
+        var localId = $("#custId").val();
+        var localName = $("#name").val();
+        var r = confirm("Do you want to delete: "+localName);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Customers")',
+                data: { id: localId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+

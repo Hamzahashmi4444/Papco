@@ -1,0 +1,601 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Vehicle>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+@{
+    ViewBag.Title = "Vehicle";
+}
+<hr />
+<div class="container">
+    <div class="col-md-8">
+        <h2>Vehicles</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "Vehicles", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Vehicle Code", @placeholder = "Vehicle Code" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-40px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b>@Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Vehicle Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Driver Name", "Index", new { sortOrder = ViewBag.DriverSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Carrier Name", "Index", new { sortOrder = ViewBag.CarrierSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                        <th><b title="Sort By Created By">@Html.ActionLink("Created By", "Index", new { sortOrder = ViewBag.CreatedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created Date">@Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified By">@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified Date">@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+
+                        <th><b>@Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        string LIDate, LEDate;
+                        if (item.LicenseIDate != null)
+                        {
+                            LIDate = item.LicenseIDate.Value.ToShortDateString();
+                        }
+                        else
+                        {
+                            LIDate = null;
+                        }
+                        if (item.LicenseEDate != null)
+                        {
+                            LEDate = item.LicenseEDate.Value.ToShortDateString();
+                        }
+                        else
+                        {
+                            LEDate = null;
+                        }
+                        //var rowV = Convert.ToBase64String(item.RowVersionInt);
+                        <tr value="@item.VehicleID"  style="color: @(item.Active == false ? "red" : "black")" onclick="edit('@item.VehicleID','@item.VehicleCode','@item.LicenseNo','@LIDate','@LEDate','@item.Active','@item.LastActive','@item.Remarks','@item.CarrierID','@item.DriverID','@item.Carrier.CarrierName','@item.Driver.DriverName','@item.RowVersionInt');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Driver.DriverName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Carrier.CarrierName)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+
+    @*@{
+            DateTime createdDate;
+            try
+            {
+                createdDate = Model.FirstOrDefault().CreatedDate;
+            }
+            catch
+            {
+                createdDate = System.DateTime.Now;
+
+            }
+        }*@
+
+    @using (Html.BeginForm("Create", "Vehicles", FormMethod.Post, new { role = "form", @id = "formVehicle" }))
+    {
+        <br /><br />
+        <div class="col-md-4">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Label(" ", new { @id = "errorMessagesOnSave", Style = "color: red" })
+
+            @Html.HiddenFor(model => Model.FirstOrDefault().RowVersionInt, new { @class = "form-control", @id = "hdnRowVersion" })
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-5" style="padding-left:14PX;">
+                    <button type="button" class="btn btn-primary" onclick="clearNew();">New</button>
+                    <button type="submit" class="btn btn-primary" name="save" value="save" id="save">Save</button>
+                    @*<button type="button" class="btn btn-primary" id="delete" disabled>Delete</button>*@
+                    <button type="button" class="btn btn-primary" id="trailerBtn" onclick="traNaviagte();">Bowser</button>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                    @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @Value = createdDate })*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().VehicleID, new { @id = "vehId" })
+                @{
+                    try
+                    {
+                        @Html.Hidden("SomeCarrierName", Model.FirstOrDefault().CarrierID, new { @id = "hiddenCarrierId" })
+                    }
+                    catch (Exception)
+                    {
+                        @Html.Hidden("SomeCarrierName", 0, new { @id = "hiddenCarrierId" })
+                    }
+                    try
+                    {
+                        @Html.Hidden("SomeDriverName", Model.FirstOrDefault().DriverID, new { @id = "hiddenDriverId" })
+                    }
+                    catch (Exception)
+                    {
+                        @Html.Hidden("SomeDriverName", 0, new { @id = "hiddenDriverId" })
+                    }
+                }
+
+                <div class="form-group">
+                    <label for="carrSelect" class="col-md-5 control-label">Carrier Name<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().CarrierID, ViewData["CarrierID"] as SelectList, "Select Carrier", new { @class = "form-control", @id = "carrierName" })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CarrierID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="drvSelect" class="col-md-5 control-label">Driver Name<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().DriverID, ViewData["DriverID"] as SelectList, "Select Driver", new { @class = "form-control", @id = "driverName" })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().DriverID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="drvCnic" class="col-md-5 control-label">Driver CNIC</label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(m => Model.FirstOrDefault().Driver.CNIC, new { htmlAttributes = new { @class = "form-control", @id = "driverCNIC", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().Driver.CNIC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vehCode" class="col-md-5 control-label">Vehicle Code<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(m => Model.FirstOrDefault().VehicleCode, new { htmlAttributes = new { @class = "form-control", @id = "code" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().VehicleCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="oprLicNo" class="col-md-5 control-label">Operation License No<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseNo, new { htmlAttributes = new { @class = "form-control", @id = "oprLicNo" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @{
+                    string licenseIssueDate = null;
+                    try
+                    {
+                        if (Model.FirstOrDefault().LicenseIDate != null)
+                        {
+                            licenseIssueDate = Convert.ToString(Model.FirstOrDefault().LicenseIDate.Value.ToShortDateString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        licenseIssueDate = null;
+                    }
+                }
+                <div class="form-group">
+                    <label for="licIDate" class="col-md-5 control-label">License Issue Date<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseIDate, new { htmlAttributes = new { @class = "form-control", @id = "licIDate", @Value = licenseIssueDate } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseIDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @{
+                    string licenseExpiryDate = null;
+                    try
+                    {
+                        if (Model.FirstOrDefault().LicenseEDate != null)
+                        {
+                            licenseExpiryDate = Convert.ToString(Model.FirstOrDefault().LicenseEDate.Value.ToShortDateString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        licenseExpiryDate = null;
+                    }
+                }
+
+                <div class="form-group">
+                    <label for="licEDate" class="col-md-5 control-label">License Expiry Date<b style="color:red">*</b></label>
+                    <div class="col-md-7">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseEDate, new { htmlAttributes = new { @class = "form-control", @id = "licEDate", @Value = licenseExpiryDate } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseEDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="active" class="col-md-5 control-label">Active</label>
+                    <div class="col-md-7">
+                        @Html.CheckBoxFor(m => Model.FirstOrDefault().Active, new { @id = "active", htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label(" Blacklist")
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label for="lactive" class="col-md-4 control-label">Last Active</label>
+                        <div class="col-md-4">
+                            @Html.EditorFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @class = "form-control", @id = "lactive" } })
+                        </div>
+                    </div>*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @id = "lactive" } })
+                <div class="form-group">
+                    <label for="remarks" class="col-md-5 control-label">Remarks</label>
+                    <div class="col-md-7">
+                        @Html.TextAreaFor(m => Model.FirstOrDefault().Remarks, new { @class = "form-control", @id = "remarks", cols = 39, @rows = 6 })
+                        @*<textarea class="form-control" rows="2" id="remarks" placeholder="Message (Max 200 Characters)"></textarea>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+                    }
+</div>
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+<script type="text/javascript">
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoComplete", "Vehicles"))",
+                data: { "term": request.term },
+                success: function (data) {
+                    debugger;
+                    for (var i = 0; i < data.length ; i++) {
+                        customer[i] = { label: data[i] };
+                    }
+                }
+            });
+            response(customer);
+        }
+    });
+    $(function () {
+
+        $("#carrierName").val($("#hiddenCarrierId").val());
+        $("#driverName").val($("#hiddenDriverId").val());
+
+        $("#formVehicle").submit(function (e) {
+            var isValid = $('#formVehicle').valid();
+            if (!isValid) {
+                e.preventDefault(); //prevent the default action
+            }
+            else {
+                e.preventDefault();
+                if (new Date() > new Date($('#licEDate').val()) && $('#licEDate').val() != null) {
+                    $("#errorMessagesOnSave").text("Vehicle License is expired");
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("UniqueCode", "Vehicles")',
+                    data: {
+                        code: $("#code").val(),
+                        Id: $("#vehId").val()
+                    },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    if (data == false) {
+                        $("#errorMessagesOnSave").text("Vehicle Code is not unique");
+                        return;
+                    }
+                    else {
+                        $("#errorMessagesOnSave").text(" ");
+                        $("#formVehicle").unbind('submit').submit();
+                    }
+
+                })
+            }
+
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if ($("#vehId").val() == "") {
+            $("#save").prop("disabled", true);
+            // $("#delete").prop("disabled", true);
+            $("#trailerBtn").prop("disabled", true);
+            //////////////////////////////////////////////////////////this code should be executed if db is empty///////////////////////////////////////////
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectDriver", "Vehicles")',
+                data: { carriId: $('#carrierName').val() },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#driverName').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#driverName').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                }
+                ////////////////////////driver CNIC//////////////////////////////////////////////////////////////
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("SelectDriverCNIC", "Vehicles")',
+                    data: { drvId: drvId },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    $('#driverCNIC').val(data[0].Text);
+                })
+            })
+
+        }
+        else {
+            $("#save").prop("disabled", false);
+            //$("#delete").prop("disabled", false);
+            $("#trailerBtn").prop("disabled", false);
+        }
+
+        $('#licIDate').datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+        $('#licEDate').datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+        $('#lactive').datetimepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm:ss tt',
+            dateFormat: 'mm/dd/yy',
+            timeInput: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //$.validator.addMethod("greaterThan",
+        //                function (value, element, params) {
+        //                    debugger;
+        //                    //var d = new Date();
+        //                    //return new Date(value) > currentDate;
+        //                    if (!Date.parse(value)) {
+        //                        return;
+        //                    }
+        //                    //return !isNaN(d.valueOf());
+
+        //                    if (!/Invalid|NaN/.test(new Date(value))) {
+        //                        // return new Date(value) > new Date($(params).val());
+        //                        return (new Date(value) > new Date()) && (new Date(value) > new Date($(params).val()));
+        //                    }
+
+
+        //                    //return isNaN(value) && isNaN($(params).val())
+        //                    //    || (Number(value) > Number($(params).val()));
+
+        //                }, 'Expiry date must be greater than today.');
+        //$.validator.addMethod("LessThan",
+        //                function (value, element, params) {
+        //                    debugger;
+        //                    //var d = new Date();
+        //                    //return new Date(value) > currentDate;
+        //                    if (!Date.parse(value)) {
+        //                        return;
+        //                    }
+        //                    //return !isNaN(d.valueOf());
+
+        //                    if (!/Invalid|NaN/.test(new Date(value))) {
+        //                        // return new Date(value) > new Date($(params).val());
+        //                        return new Date(value) < new Date($(params).val());
+        //                    }
+
+
+        //                    //return isNaN(value) && isNaN($(params).val())
+        //                    //    || (Number(value) > Number($(params).val()));
+
+        //                }, 'Issue Date Should  be Less Than Expiry Date.');
+        //$('#formVehicle').validate({
+        //    errorClass: "text-danger",
+        //    debug: true,
+        //    rules: {
+        //        LicenseEDate: {
+        //            greaterThan: "#licIDate",
+        //        },
+        //        LicenseIDate: {
+        //            LessThan: "#licEDate",
+        //        }
+
+        //    }
+        //});
+    });
+
+
+    function edit(vehId, code, oprlicNo, licIdate, licEdate, active, lastActive, remarks, carrierId, drvId, carrierName, drvName,RowVersion) {
+
+        $("#carrierName").val(carrierId);
+        $("#hdnRowVersion").val(RowVersion);
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("SelectDriver", "Vehicles")',
+            data: { carriId: carrierId },
+            datatype: "json",
+            traditional: true
+        }).done(function myfunction(data) {
+            $('#driverName').empty();
+            $('#driverName').append('<option value="">Select Driver</option>');
+            for (var i = 0; i < data.length; i++) {
+                $('#driverName').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+            }
+            $("#driverName").val(drvId);
+            ////////////////////////driver CNIC//////////////////////////////////////////////////////////////
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectDriverCNIC", "Vehicles")',
+                data: { drvId: drvId },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#driverCNIC').val(data[0].Text);
+            })
+        })
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $("#vehId").val(vehId)
+        $("#code").val(code)
+        $("#oprLicNo").val(oprlicNo)
+        $("#licIDate").val(licIdate)
+        $("#licEDate").val(licEdate)
+        if (active == "onclick") {
+            $("#active").prop('checked', true);
+        }
+        else {
+            $("#active").prop('checked', false);
+        }
+        $("#lactive").val(lastActive)
+        $("#remarks").val(remarks)
+        $("#trailerBtn").prop("disabled", false); // added against issue no 78
+
+    }
+
+    function clearNew() {
+        $("#save").prop("disabled", false);
+        $("#trailerBtn").prop("disabled", true); // added against issue no 78
+        $("#carrierName").val("");
+        $("#driverName").val("");
+        $('#driverCNIC').val("");
+        $("#vehId").val(0)
+        $("#code").val("")
+        $("#oprLicNo").val("")
+        $("#licIDate").val("")
+        $("#licEDate").val("")
+        $("#lactive").val("")
+        $("#remarks").val("")
+    }
+    //function setCarrDrvId() {
+    //    $("#carrierId").val($('#carrierName').val())
+    //    $("#drvId").val($('#driverName').val())
+    //}
+    function traNaviagte() {
+        var routeValue1 = $("#vehId").val();
+        var route = '@Url.Action("Index","Trailers")' + '/Index/' + routeValue1;
+        window.location.href = route;
+        //$(this).attr("href", route);
+    }
+    function deleteRecord() {
+        var localId = $("#vehId").val();
+        var localName = $("#code").val();
+        var r = confirm("Do you want to delete: " + localName);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Vehicles")',
+                data: { id: localId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+    $(document).ready(function () {
+        $('#carrierName').change(function () {
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectDriver", "Vehicles")',
+                data: { carriId: $('#carrierName').val() },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#driverName').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#driverName').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                }
+                ////////////////////////driver CNIC//////////////////////////////////////////////////////////////
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("SelectDriverCNIC", "Vehicles")',
+                    data: { drvId: $('#driverName').val() },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    $('#driverCNIC').val(data[0].Text);
+                })
+            })
+        });
+        ///////////////////////////////////////driver Name Change//////////////////////////////////////////////////
+        $('#driverName').change(function () {
+            debugger;
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("SelectDriverCNIC", "Vehicles")',
+                    data: { drvId: $('#driverName').val() },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    $('#driverCNIC').val(data[0].Text);
+                })
+        });
+    });
+    @*$("#trailerBtn").click(function () {
+        var routeValue1 = $("#vehId").val();
+        var route = '@Url.Action("Index","Trailers")'+ '/Index/' + routeValue1;
+        $(this).attr("href", route);
+    });*@
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

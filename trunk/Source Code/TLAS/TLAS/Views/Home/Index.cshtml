@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@*<div class="jumbotron">
+        <h2 class="text-center">Trucl Loading Automation System</h2>
+
+    </div>*@
+<hr />
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Avanceon&trade;-Truck Loading Automation System</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed">
+                    <tr>
+                        <th><a href='@Url.Action("Index", "Orders")'><b><span class="glyphicon glyphicon-stop"></span>Order</b></a></th>
+                    </tr>
+                    <tr>
+                        <td>Create Order</td>
+                    </tr>
+                    <tr>
+                        <th><a href='@Url.Action("Index", "Shipments")'><b><span class="glyphicon glyphicon-stop"></span>Shipment</b></a></th>
+                    </tr>
+                    <tr>
+                        <td>Create Shipment</td>
+                    </tr>
+                    <tr>
+                        <th><a href='@Url.Action("Index", "DailyReport")'><b><span class="glyphicon glyphicon-stop"></span>Reports</b></a></th>
+                    </tr>
+                    <tr>
+                        <td>Generate Shipment Loaded Reports</td>
+                    </tr>
+                    <tr>
+                        <th><a href='@Url.Action("Home", "Shipments")'><b><span class="glyphicon glyphicon-stop"></span>Closed Shipments</b></a></th>
+                    </tr>
+                    <tr>
+                        <td>View summary of closed Shipments</td>
+                    </tr>
+                    <tr>
+                        <th><a href='@Url.Action("ActiveShipments", "Shipments")'><b><span class="glyphicon glyphicon-stop"></span>Active Shipments</b></a></th>
+                    </tr>
+                    <tr>
+                        <td>View summary of active Shipments</td>
+                    </tr>
+                </table>
+            </div>
+            @*<div class="panel-footer panel-danger">
+                    <div class="text-center">Save Oil</div>
+                </div>*@
+        </div>
+    </div>
+</div>

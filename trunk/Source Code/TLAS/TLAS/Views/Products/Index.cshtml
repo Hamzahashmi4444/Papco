@@ -1,0 +1,189 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@{
+    ViewBag.Title = "Product";
+}
+<hr />
+<div class="container">
+    <div class="col-md-5">
+        <h2>Product</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Product Name", @placeholder = "Product Name" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-23px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b>@Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Active Products">@Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var rowV = Convert.ToBase64String(item.RowVersion);
+                        <tr value="@item.ProductID" style="color: @(item.Active == false ? "red" : "black")" onclick="edit('@item.ProductID','@item.ProductName','@item.WeighOut','@item.Active','@item.LastActive','@item.Remarks','@rowV');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+    @using (Html.BeginForm("Edit", "Products", FormMethod.Post))
+    {
+        <br />
+        <br />
+
+
+        <div class="col-md-7" style="margin-top:20px;">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-4">
+                    @*<button type="button" class="btn btn-primary" disabled>New</button>*@
+                    <button type="button" class="btn btn-primary" onclick="clearNew();">New</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @*<button type="button" class="btn btn-primary" disabled>Delete</button>*@
+                </div>
+            </div>
+            @Html.HiddenFor(m => Model.FirstOrDefault().ProductID, new { @id = "prdId" })
+            @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @Value = Model.FirstOrDefault().CreatedDate })*@
+            @Html.HiddenFor(m => Model.FirstOrDefault().WeighOut, new { @id = "weighout" })
+            @Html.HiddenFor(model => Model.FirstOrDefault().RowVersion, new { @class = "form-control", @id = "hdnRowVersion" })
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    <label for="prdName" class="col-md-4 control-label">Product Name</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().ProductName, new { htmlAttributes = new { @class = "form-control", @id = "name"@*, @readonly = "readonly"*@ } })
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label for="" class="col-md-4 control-label">Weigh Out</label>
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(m => Model.FirstOrDefault().WeighOut, new { @id = "weighout", htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Active</label>
+                    <div class="col-md-4">
+                        @Html.CheckBoxFor(m => Model.FirstOrDefault().Active, new { @id = "active", htmlAttributes = new { @class = "form-control" }})
+                        @Html.Label("uncheck if Blacklisted")
+                    </div>
+
+                </div>
+                @*<div class="form-group">
+                        <label for="lastActive" class="col-md-4 control-label">Last Active</label>
+                        <div class="col-md-4">
+                            @Html.EditorFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @class = "form-control", @id = "lastActive" } })
+                            @Html.ValidationMessageFor(m => Model.FirstOrDefault().LastActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @id = "lastActive" } })
+                <div class="form-group">
+                    <label for="remarks" class="col-md-4 control-label">Remarks</label>
+                    <div class="col-md-4">
+                        @Html.TextAreaFor(m => Model.FirstOrDefault().Remarks, new { @class = "form-control", @id = "remarks"})
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#lastActive').datetimepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm:ss tt',
+            dateFormat: 'mm/dd/yy',
+            timeInput: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+    });
+    function edit(id, name, weighout, active, lastactive, remarks, RowVersion) {
+        //alert("The value is"+weighout)
+        //document.getElementById("name").ad("readonly"); 
+        $("#prdId").val(id)
+        $("#name").val(name)
+        if (weighout == "onclick") {
+            $("#weighout").prop('checked', true);
+        }
+        else {
+            $("#weighout").prop('checked', false);
+        }
+        if (active == "onclick") {
+            $("#active").prop('checked', true);
+        }
+        else {
+            $("#active").prop('checked', false);
+        }
+        $("#lastActive").val(lastactive)
+        $("#remarks").val(remarks)
+        $("#hdnRowVersion").val(RowVersion)
+    }
+    function clearNew() {
+        $("#save").prop("disabled", false);
+        $("#prdId").val(0)
+        $("#name").val("")
+        document.getElementById("name").removeAttribute("readonly"); 
+        document.getElementById("active").checked = false;
+        //$("#active").val("")
+        $("#remarks").val("")
+    }
+</script>
+
+
+
+
+

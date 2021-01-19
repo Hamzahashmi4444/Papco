@@ -1,0 +1,1167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TLASPreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AccessCard">
+    <Key>
+      <PropertyRef Name="CardID" />
+    </Key>
+    <Property Name="CardID" Type="int" Nullable="false" />
+    <Property Name="BayID" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="IsAssigned" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CardKey" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.AccessCardHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AccessCardHistory">
+    <Key>
+      <PropertyRef Name="CardID" />
+      <PropertyRef Name="BayID" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="IsAssigned" />
+      <PropertyRef Name="LastActive" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CardID" Type="int" Nullable="false" />
+    <Property Name="BayID" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="IsAssigned" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CardKey" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Bay">
+    <Key>
+      <PropertyRef Name="BayID" />
+    </Key>
+    <Property Name="BayID" Type="int" Nullable="false" />
+    <Property Name="Frequency" Type="int" Nullable="false" />
+    <Property Name="CurrQueue" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Carrier">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+    </Key>
+    <Property Name="CarrierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierAddress" Type="nvarchar" MaxLength="200" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Remarks" Type="nvarchar(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.CarrierHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CarrierHistory">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CarrierID" Type="int" Nullable="false" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierAddress" Type="nvarchar" MaxLength="200" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Compartment">
+    <Key>
+      <PropertyRef Name="CompartmentID" />
+    </Key>
+    <Property Name="CompartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompartmentCode" Type="int" Nullable="false" />
+    <Property Name="Capactiy" Type="int" Nullable="false" />
+    <Property Name="TrailerID" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ChamberDipMM" Type="float" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.CompartmentHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CompartmentHistory">
+    <Key>
+      <PropertyRef Name="CompartmentID" />
+      <PropertyRef Name="CompartmentCode" />
+      <PropertyRef Name="Capactiy" />
+      <PropertyRef Name="TrailerID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="CompartmentID" Type="int" Nullable="false" />
+    <Property Name="CompartmentCode" Type="int" Nullable="false" />
+    <Property Name="Capactiy" Type="int" Nullable="false" />
+    <Property Name="TrailerID" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerAddress" Type="nvarchar" MaxLength="200" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="256" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="256" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="CNIC" Type="nvarchar" MaxLength="13" />
+    <Property Name="SignatureImagePath" Type="nvarchar(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.CustomerHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CustomerHistory">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="CustomerName" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ModifiedDate" />
+    </Key>
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerAddress" Type="nvarchar" MaxLength="200" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="256" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="256" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Driver">
+    <Key>
+      <PropertyRef Name="DriverID" />
+    </Key>
+    <Property Name="DriverID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DriverName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LicenseNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LicenseIDate" Type="date" Nullable="false" />
+    <Property Name="LicenseEDate" Type="date" Nullable="false" />
+    <Property Name="CNIC" Type="nvarchar" MaxLength="13" Nullable="false" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CarrierID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.DriverHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DriverHistory">
+    <Key>
+      <PropertyRef Name="DriverID" />
+      <PropertyRef Name="DriverName" />
+      <PropertyRef Name="LicenseNo" />
+      <PropertyRef Name="LicenseIDate" />
+      <PropertyRef Name="LicenseEDate" />
+      <PropertyRef Name="CNIC" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ModifiedDate" />
+    </Key>
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="DriverName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LicenseNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LicenseIDate" Type="date" Nullable="false" />
+    <Property Name="LicenseEDate" Type="date" Nullable="false" />
+    <Property Name="CNIC" Type="nvarchar" MaxLength="13" Nullable="false" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CarrierID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="OrderQty" Type="float" Nullable="false" />
+    <Property Name="RemainQty" Type="float" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeletedFlag" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CarrierID" Type="int" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="OrderStatusID" Type="int" Nullable="false" />
+    <Property Name="OrderDeliveryDT" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.OrderHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="OrderHistory">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="OrderQty" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="OrderCode" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="DeletedFlag" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="OrderStatusID" />
+    </Key>
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="OrderQty" Type="float" Nullable="false" />
+    <Property Name="RemainQty" Type="float" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeletedFlag" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CarrierID" Type="int" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="OrderStatusID" Type="int" Nullable="false" />
+    <Property Name="OrderDeliveryDT" Type="datetime" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="OrderStatus">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="WeighOut" Type="bit" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.ProductHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ProductHistory">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="WeighOut" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="WeighOut" Type="bit" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Shifts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShiftName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StartTime" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="EndTime" Type="nvarchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Shipment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IsManual" Type="bit" Nullable="false" />
+    <Property Name="AccessCardID" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeletedFlag" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ShipmentStatusID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="BayID" Type="int" />
+    <Property Name="BayName" Type="nvarchar" MaxLength="10" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="DriverName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DriverCNIC" Type="nvarchar" MaxLength="13" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShipmentDate" Type="datetime" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RemarksManual" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="ShipmentCompartment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderedQuantity" Type="int" />
+    <Property Name="PlannedQuantity" Type="int" />
+    <Property Name="ActualBCUQuantity" Type="int" />
+    <Property Name="AccessCardKey" Type="nvarchar" MaxLength="10" />
+    <Property Name="BayID" Type="int" Nullable="false" />
+    <Property Name="Product" Type="nvarchar" MaxLength="10" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CompartmentID" Type="int" />
+    <Property Name="ShipmentID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="BayName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CompartmentCode" Type="int" Nullable="false" />
+    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="PreDip" Type="int" />
+    <Property Name="PostDip" Type="int" />
+    <Property Name="Delta" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.ShipmentCompartmentHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ShipmentCompartmentHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="BayID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ShipmentID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CompartmentCode" />
+      <PropertyRef Name="Capacity" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="OrderedQuantity" Type="int" />
+    <Property Name="PlannedQuantity" Type="int" />
+    <Property Name="ActualBCUQuantity" Type="int" />
+    <Property Name="AccessCardKey" Type="nvarchar" MaxLength="10" />
+    <Property Name="BayID" Type="int" Nullable="false" />
+    <Property Name="Product" Type="nvarchar" MaxLength="10" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CompartmentID" Type="int" />
+    <Property Name="ShipmentID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="BayName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CompartmentCode" Type="int" Nullable="false" />
+    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.ShipmentHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ShipmentHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="IsManual" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="ShipmentStatusID" />
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="IsManual" Type="bit" Nullable="false" />
+    <Property Name="AccessCardID" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeletedFlag" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ShipmentStatusID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="BayID" Type="int" />
+    <Property Name="BayName" Type="nvarchar" MaxLength="10" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="DriverName" Type="nvarchar" MaxLength="50" />
+    <Property Name="DriverCNIC" Type="nvarchar" MaxLength="13" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShipmentDate" Type="datetime" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ShipmentStatus">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="test">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="text" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Trailer">
+    <Key>
+      <PropertyRef Name="TrailerID" />
+    </Key>
+    <Property Name="TrailerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrailerCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="LoadingType" Type="bit" Nullable="false" />
+    <Property Name="VehicleID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="BowserCalibrationCertificate" Type="nvarchar(max)" />
+    <Property Name="CertificateExpiryDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.TrailerHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TrailerHistory">
+    <Key>
+      <PropertyRef Name="TrailerID" />
+      <PropertyRef Name="TrailerCode" />
+      <PropertyRef Name="LoadingType" />
+      <PropertyRef Name="VehicleID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="TrailerID" Type="int" Nullable="false" />
+    <Property Name="TrailerCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="LoadingType" Type="bit" Nullable="false" />
+    <Property Name="VehicleID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="VehicleID" />
+    </Key>
+    <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="LicenseNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="LicenseIDate" Type="date" />
+    <Property Name="LicenseEDate" Type="date" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CarrierID" Type="int" Nullable="false" />
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="RowVersionInt" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.VehicleHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="VehicleHistory">
+    <Key>
+      <PropertyRef Name="VehicleID" />
+      <PropertyRef Name="VehicleCode" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="CarrierID" />
+      <PropertyRef Name="DriverID" />
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="VehicleID" Type="int" Nullable="false" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="LicenseNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="LicenseIDate" Type="date" />
+    <Property Name="LicenseEDate" Type="date" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="200" />
+    <Property Name="CarrierID" Type="int" Nullable="false" />
+    <Property Name="DriverID" Type="int" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="HistoryType" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="WeighBridge">
+    <Key>
+      <PropertyRef Name="ShipmentID" />
+    </Key>
+    <Property Name="TareWeight" Type="int" />
+    <Property Name="LoadedWeight" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="ActualWeight" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="ShipmentID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ismanual" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TLASPre10.dbo.WeighBridgeHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="WeighBridgeHistory">
+    <Key>
+      <PropertyRef Name="ModifiedDate" />
+      <PropertyRef Name="ShipmentID" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="Ismanual" />
+    </Key>
+    <Property Name="TareWeight" Type="int" />
+    <Property Name="LoadedWeight" Type="int" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="ActualWeight" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="ShipmentID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="VehicleCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ismanual" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_AccessCard_Bay">
+    <End Role="Bay" Type="Self.Bay" Multiplicity="1" />
+    <End Role="AccessCard" Type="Self.AccessCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="AccessCard">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bay_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Bay" Type="Self.Bay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Bay">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Compartment_Trailer">
+    <End Role="Trailer" Type="Self.Trailer" Multiplicity="1" />
+    <End Role="Compartment" Type="Self.Compartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trailer">
+        <PropertyRef Name="TrailerID" />
+      </Principal>
+      <Dependent Role="Compartment">
+        <PropertyRef Name="TrailerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Driver_dbo_Carrier_CarrierID">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Driver" Type="Self.Driver" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Driver">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Order_dbo_Customer_CustomerID">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Order_dbo_Product_ProductID">
+    <End Role="Product" Type="Self.Product" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Trailer_dbo_Vehicle_VehicleID">
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Trailer" Type="Self.Trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Trailer">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Vehicle_dbo_Carrier_CarrierID">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Vehicle_dbo_Driver_DriverID">
+    <End Role="Driver" Type="Self.Driver" Multiplicity="1" />
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Driver">
+        <PropertyRef Name="DriverID" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="DriverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Carrier">
+    <End Role="Carrier" Type="Self.Carrier" Multiplicity="0..1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carrier">
+        <PropertyRef Name="CarrierID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CarrierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_OrderStatus">
+    <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="OrderStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Vehicle">
+    <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_AccessCard">
+    <End Role="AccessCard" Type="Self.AccessCard" Multiplicity="0..1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccessCard">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="AccessCardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_Bay">
+    <End Role="Bay" Type="Self.Bay" Multiplicity="0..1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_Order">
+    <End Role="Order" Type="Self.Order" Multiplicity="1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Shipment_ShipmentStatus">
+    <End Role="ShipmentStatus" Type="Self.ShipmentStatus" Multiplicity="1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ShipmentStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="ShipmentStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Bay">
+    <End Role="Bay" Type="Self.Bay" Multiplicity="1" />
+    <End Role="ShipmentCompartment" Type="Self.ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bay">
+        <PropertyRef Name="BayID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="BayID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Compartment">
+    <End Role="Compartment" Type="Self.Compartment" Multiplicity="0..1" />
+    <End Role="ShipmentCompartment" Type="Self.ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compartment">
+        <PropertyRef Name="CompartmentID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="CompartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ShipmentCompartment_Shipment">
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="1" />
+    <End Role="ShipmentCompartment" Type="Self.ShipmentCompartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shipment">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ShipmentCompartment">
+        <PropertyRef Name="ShipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WeighBridge_Shipment">
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="1" />
+    <End Role="WeighBridge" Type="Self.WeighBridge" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Shipment">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="WeighBridge">
+        <PropertyRef Name="ShipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TLASPreModelStoreContainer">
+    <EntitySet Name="AccessCard" EntityType="Self.AccessCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bay" EntityType="Self.Bay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Compartment" EntityType="Self.Compartment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Shifts" EntityType="Self.Shifts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Shipment" EntityType="Self.Shipment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ShipmentCompartment" EntityType="Self.ShipmentCompartment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ShipmentStatus" EntityType="Self.ShipmentStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="test" EntityType="Self.test" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trailer" EntityType="Self.Trailer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WeighBridge" EntityType="Self.WeighBridge" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AccessCardHistory" EntityType="Self.AccessCardHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AccessCardHistory].[CardID] AS [CardID], 
+    [AccessCardHistory].[BayID] AS [BayID], 
+    [AccessCardHistory].[Active] AS [Active], 
+    [AccessCardHistory].[IsAssigned] AS [IsAssigned], 
+    [AccessCardHistory].[LastActive] AS [LastActive], 
+    [AccessCardHistory].[ModifiedDate] AS [ModifiedDate], 
+    [AccessCardHistory].[Remarks] AS [Remarks], 
+    [AccessCardHistory].[CreatedDate] AS [CreatedDate], 
+    [AccessCardHistory].[CardKey] AS [CardKey], 
+    [AccessCardHistory].[CreatedBy] AS [CreatedBy], 
+    [AccessCardHistory].[ModifiedBy] AS [ModifiedBy], 
+    [AccessCardHistory].[HistoryType] AS [HistoryType], 
+    [AccessCardHistory].[RowVersion] AS [RowVersion]
+    FROM [dbo].[AccessCardHistory] AS [AccessCardHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CarrierHistory" EntityType="Self.CarrierHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CarrierHistory].[CarrierID] AS [CarrierID], 
+    [CarrierHistory].[CarrierName] AS [CarrierName], 
+    [CarrierHistory].[CarrierAddress] AS [CarrierAddress], 
+    [CarrierHistory].[ContactName] AS [ContactName], 
+    [CarrierHistory].[CarrierPhone] AS [CarrierPhone], 
+    [CarrierHistory].[CarrierMobile] AS [CarrierMobile], 
+    [CarrierHistory].[CarrierEmail] AS [CarrierEmail], 
+    [CarrierHistory].[Active] AS [Active], 
+    [CarrierHistory].[ModifiedDate] AS [ModifiedDate], 
+    [CarrierHistory].[LastActive] AS [LastActive], 
+    [CarrierHistory].[CreatedDate] AS [CreatedDate], 
+    [CarrierHistory].[CreatedBy] AS [CreatedBy], 
+    [CarrierHistory].[ModifiedBy] AS [ModifiedBy], 
+    [CarrierHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[CarrierHistory] AS [CarrierHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CompartmentHistory" EntityType="Self.CompartmentHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CompartmentHistory].[CompartmentID] AS [CompartmentID], 
+    [CompartmentHistory].[CompartmentCode] AS [CompartmentCode], 
+    [CompartmentHistory].[Capactiy] AS [Capactiy], 
+    [CompartmentHistory].[TrailerID] AS [TrailerID], 
+    [CompartmentHistory].[Description] AS [Description], 
+    [CompartmentHistory].[ModifiedDate] AS [ModifiedDate], 
+    [CompartmentHistory].[CreatedDate] AS [CreatedDate], 
+    [CompartmentHistory].[CreatedBy] AS [CreatedBy], 
+    [CompartmentHistory].[ModifiedBy] AS [ModifiedBy], 
+    [CompartmentHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[CompartmentHistory] AS [CompartmentHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CustomerHistory" EntityType="Self.CustomerHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CustomerHistory].[CustomerID] AS [CustomerID], 
+    [CustomerHistory].[CustomerName] AS [CustomerName], 
+    [CustomerHistory].[CustomerAddress] AS [CustomerAddress], 
+    [CustomerHistory].[ContactName] AS [ContactName], 
+    [CustomerHistory].[CustomerPhone] AS [CustomerPhone], 
+    [CustomerHistory].[CustomerMobile] AS [CustomerMobile], 
+    [CustomerHistory].[CustomerEmail] AS [CustomerEmail], 
+    [CustomerHistory].[Active] AS [Active], 
+    [CustomerHistory].[CreatedDate] AS [CreatedDate], 
+    [CustomerHistory].[ModifiedDate] AS [ModifiedDate], 
+    [CustomerHistory].[CreatedBy] AS [CreatedBy], 
+    [CustomerHistory].[ModifiedBy] AS [ModifiedBy], 
+    [CustomerHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[CustomerHistory] AS [CustomerHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DriverHistory" EntityType="Self.DriverHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DriverHistory].[DriverID] AS [DriverID], 
+    [DriverHistory].[DriverName] AS [DriverName], 
+    [DriverHistory].[LicenseNo] AS [LicenseNo], 
+    [DriverHistory].[LicenseIDate] AS [LicenseIDate], 
+    [DriverHistory].[LicenseEDate] AS [LicenseEDate], 
+    [DriverHistory].[CNIC] AS [CNIC], 
+    [DriverHistory].[Mobile] AS [Mobile], 
+    [DriverHistory].[Active] AS [Active], 
+    [DriverHistory].[LastActive] AS [LastActive], 
+    [DriverHistory].[Remarks] AS [Remarks], 
+    [DriverHistory].[CarrierID] AS [CarrierID], 
+    [DriverHistory].[CreatedDate] AS [CreatedDate], 
+    [DriverHistory].[ModifiedDate] AS [ModifiedDate], 
+    [DriverHistory].[CreatedBy] AS [CreatedBy], 
+    [DriverHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[DriverHistory] AS [DriverHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="OrderHistory" EntityType="Self.OrderHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [OrderHistory].[OrderID] AS [OrderID], 
+    [OrderHistory].[OrderDate] AS [OrderDate], 
+    [OrderHistory].[OrderQty] AS [OrderQty], 
+    [OrderHistory].[RemainQty] AS [RemainQty], 
+    [OrderHistory].[CustomerID] AS [CustomerID], 
+    [OrderHistory].[ProductID] AS [ProductID], 
+    [OrderHistory].[OrderCode] AS [OrderCode], 
+    [OrderHistory].[ModifiedDate] AS [ModifiedDate], 
+    [OrderHistory].[DeletedFlag] AS [DeletedFlag], 
+    [OrderHistory].[CreatedDate] AS [CreatedDate], 
+    [OrderHistory].[CarrierID] AS [CarrierID], 
+    [OrderHistory].[VehicleID] AS [VehicleID], 
+    [OrderHistory].[OrderStatusID] AS [OrderStatusID], 
+    [OrderHistory].[OrderDeliveryDT] AS [OrderDeliveryDT], 
+    [OrderHistory].[CreatedBy] AS [CreatedBy], 
+    [OrderHistory].[ModifiedBy] AS [ModifiedBy], 
+    [OrderHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[OrderHistory] AS [OrderHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ProductHistory" EntityType="Self.ProductHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ProductHistory].[ProductID] AS [ProductID], 
+    [ProductHistory].[ProductName] AS [ProductName], 
+    [ProductHistory].[WeighOut] AS [WeighOut], 
+    [ProductHistory].[Active] AS [Active], 
+    [ProductHistory].[LastActive] AS [LastActive], 
+    [ProductHistory].[Remarks] AS [Remarks], 
+    [ProductHistory].[ModifiedDate] AS [ModifiedDate], 
+    [ProductHistory].[CreatedDate] AS [CreatedDate], 
+    [ProductHistory].[CreatedBy] AS [CreatedBy], 
+    [ProductHistory].[ModifiedBy] AS [ModifiedBy], 
+    [ProductHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[ProductHistory] AS [ProductHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ShipmentCompartmentHistory" EntityType="Self.ShipmentCompartmentHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ShipmentCompartmentHistory].[ID] AS [ID], 
+    [ShipmentCompartmentHistory].[OrderedQuantity] AS [OrderedQuantity], 
+    [ShipmentCompartmentHistory].[PlannedQuantity] AS [PlannedQuantity], 
+    [ShipmentCompartmentHistory].[ActualBCUQuantity] AS [ActualBCUQuantity], 
+    [ShipmentCompartmentHistory].[AccessCardKey] AS [AccessCardKey], 
+    [ShipmentCompartmentHistory].[BayID] AS [BayID], 
+    [ShipmentCompartmentHistory].[Product] AS [Product], 
+    [ShipmentCompartmentHistory].[CreatedDate] AS [CreatedDate], 
+    [ShipmentCompartmentHistory].[CompartmentID] AS [CompartmentID], 
+    [ShipmentCompartmentHistory].[ShipmentID] AS [ShipmentID], 
+    [ShipmentCompartmentHistory].[ModifiedDate] AS [ModifiedDate], 
+    [ShipmentCompartmentHistory].[BayName] AS [BayName], 
+    [ShipmentCompartmentHistory].[CompartmentCode] AS [CompartmentCode], 
+    [ShipmentCompartmentHistory].[Capacity] AS [Capacity], 
+    [ShipmentCompartmentHistory].[CreatedBy] AS [CreatedBy], 
+    [ShipmentCompartmentHistory].[ModifiedBy] AS [ModifiedBy], 
+    [ShipmentCompartmentHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[ShipmentCompartmentHistory] AS [ShipmentCompartmentHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ShipmentHistory" EntityType="Self.ShipmentHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ShipmentHistory].[ID] AS [ID], 
+    [ShipmentHistory].[IsManual] AS [IsManual], 
+    [ShipmentHistory].[AccessCardID] AS [AccessCardID], 
+    [ShipmentHistory].[ModifiedDate] AS [ModifiedDate], 
+    [ShipmentHistory].[DeletedFlag] AS [DeletedFlag], 
+    [ShipmentHistory].[CreatedDate] AS [CreatedDate], 
+    [ShipmentHistory].[ShipmentStatusID] AS [ShipmentStatusID], 
+    [ShipmentHistory].[OrderID] AS [OrderID], 
+    [ShipmentHistory].[BayID] AS [BayID], 
+    [ShipmentHistory].[BayName] AS [BayName], 
+    [ShipmentHistory].[CustomerName] AS [CustomerName], 
+    [ShipmentHistory].[VehicleCode] AS [VehicleCode], 
+    [ShipmentHistory].[DriverName] AS [DriverName], 
+    [ShipmentHistory].[DriverCNIC] AS [DriverCNIC], 
+    [ShipmentHistory].[CarrierName] AS [CarrierName], 
+    [ShipmentHistory].[ShipmentDate] AS [ShipmentDate], 
+    [ShipmentHistory].[ProductID] AS [ProductID], 
+    [ShipmentHistory].[CreatedBy] AS [CreatedBy], 
+    [ShipmentHistory].[ModifiedBy] AS [ModifiedBy], 
+    [ShipmentHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[ShipmentHistory] AS [ShipmentHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TrailerHistory" EntityType="Self.TrailerHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TrailerHistory].[TrailerID] AS [TrailerID], 
+    [TrailerHistory].[TrailerCode] AS [TrailerCode], 
+    [TrailerHistory].[LoadingType] AS [LoadingType], 
+    [TrailerHistory].[VehicleID] AS [VehicleID], 
+    [TrailerHistory].[ModifiedDate] AS [ModifiedDate], 
+    [TrailerHistory].[CreatedDate] AS [CreatedDate], 
+    [TrailerHistory].[CreatedBy] AS [CreatedBy], 
+    [TrailerHistory].[ModifiedBy] AS [ModifiedBy], 
+    [TrailerHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[TrailerHistory] AS [TrailerHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VehicleHistory" EntityType="Self.VehicleHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VehicleHistory].[VehicleID] AS [VehicleID], 
+    [VehicleHistory].[VehicleCode] AS [VehicleCode], 
+    [VehicleHistory].[LicenseNo] AS [LicenseNo], 
+    [VehicleHistory].[LicenseIDate] AS [LicenseIDate], 
+    [VehicleHistory].[LicenseEDate] AS [LicenseEDate], 
+    [VehicleHistory].[Active] AS [Active], 
+    [VehicleHistory].[LastActive] AS [LastActive], 
+    [VehicleHistory].[Remarks] AS [Remarks], 
+    [VehicleHistory].[CarrierID] AS [CarrierID], 
+    [VehicleHistory].[DriverID] AS [DriverID], 
+    [VehicleHistory].[ModifiedDate] AS [ModifiedDate], 
+    [VehicleHistory].[CreatedDate] AS [CreatedDate], 
+    [VehicleHistory].[CreatedBy] AS [CreatedBy], 
+    [VehicleHistory].[ModifiedBy] AS [ModifiedBy], 
+    [VehicleHistory].[HistoryType] AS [HistoryType]
+    FROM [dbo].[VehicleHistory] AS [VehicleHistory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="WeighBridgeHistory" EntityType="Self.WeighBridgeHistory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [WeighBridgeHistory].[TareWeight] AS [TareWeight], 
+    [WeighBridgeHistory].[LoadedWeight] AS [LoadedWeight], 
+    [WeighBridgeHistory].[Status] AS [Status], 
+    [WeighBridgeHistory].[ActualWeight] AS [ActualWeight], 
+    [WeighBridgeHistory].[ModifiedDate] AS [ModifiedDate], 
+    [WeighBridgeHistory].[ShipmentID] AS [ShipmentID], 
+    [WeighBridgeHistory].[CreatedDate] AS [CreatedDate], 
+    [WeighBridgeHistory].[VehicleCode] AS [VehicleCode], 
+    [WeighBridgeHistory].[Ismanual] AS [Ismanual], 
+    [WeighBridgeHistory].[CreatedBy] AS [CreatedBy], 
+    [WeighBridgeHistory].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[WeighBridgeHistory] AS [WeighBridgeHistory]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_AccessCard_Bay" Association="Self.FK_AccessCard_Bay">
+      <End Role="Bay" EntitySet="Bay" />
+      <End Role="AccessCard" EntitySet="AccessCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bay_Product" Association="Self.FK_Bay_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Bay" EntitySet="Bay" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Compartment_Trailer" Association="Self.FK_Compartment_Trailer">
+      <End Role="Trailer" EntitySet="Trailer" />
+      <End Role="Compartment" EntitySet="Compartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Driver_dbo_Carrier_CarrierID" Association="Self.FK_dbo_Driver_dbo_Carrier_CarrierID">
+      <End Role="Carrier" EntitySet="Carrier" />
+      <End Role="Driver" EntitySet="Driver" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Order_dbo_Customer_CustomerID" Association="Self.FK_dbo_Order_dbo_Customer_CustomerID">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Order_dbo_Product_ProductID" Association="Self.FK_dbo_Order_dbo_Product_ProductID">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Trailer_dbo_Vehicle_VehicleID" Association="Self.FK_dbo_Trailer_dbo_Vehicle_VehicleID">
+      <End Role="Vehicle" EntitySet="Vehicle" />
+      <End Role="Trailer" EntitySet="Trailer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Vehicle_dbo_Carrier_CarrierID" Association="Self.FK_dbo_Vehicle_dbo_Carrier_CarrierID">
+      <End Role="Carrier" EntitySet="Carrier" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Vehicle_dbo_Driver_DriverID" Association="Self.FK_dbo_Vehicle_dbo_Driver_DriverID">
+      <End Role="Driver" EntitySet="Driver" />
+      <End Role="Vehicle" EntitySet="Vehicle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Carrier" Association="Self.FK_Order_Carrier">
+      <End Role="Carrier" EntitySet="Carrier" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_OrderStatus" Association="Self.FK_Order_OrderStatus">
+      <End Role="OrderStatus" EntitySet="OrderStatus" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Vehicle" Association="Self.FK_Order_Vehicle">
+      <End Role="Vehicle" EntitySet="Vehicle" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_AccessCard" Association="Self.FK_Shipment_AccessCard">
+      <End Role="AccessCard" EntitySet="AccessCard" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_Bay" Association="Self.FK_Shipment_Bay">
+      <End Role="Bay" EntitySet="Bay" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_Order" Association="Self.FK_Shipment_Order">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Shipment_ShipmentStatus" Association="Self.FK_Shipment_ShipmentStatus">
+      <End Role="ShipmentStatus" EntitySet="ShipmentStatus" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Bay" Association="Self.FK_ShipmentCompartment_Bay">
+      <End Role="Bay" EntitySet="Bay" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Compartment" Association="Self.FK_ShipmentCompartment_Compartment">
+      <End Role="Compartment" EntitySet="Compartment" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ShipmentCompartment_Shipment" Association="Self.FK_ShipmentCompartment_Shipment">
+      <End Role="Shipment" EntitySet="Shipment" />
+      <End Role="ShipmentCompartment" EntitySet="ShipmentCompartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WeighBridge_Shipment" Association="Self.FK_WeighBridge_Shipment">
+      <End Role="Shipment" EntitySet="Shipment" />
+      <End Role="WeighBridge" EntitySet="WeighBridge" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

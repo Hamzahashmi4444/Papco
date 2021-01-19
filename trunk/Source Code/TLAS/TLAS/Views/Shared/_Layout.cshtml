@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>@ViewBag.Title </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        .container {
+            max-width: 1620px;
+        }
+
+        .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+            background-color: #ADD8E6;
+        }
+
+        .navbar-default .navbar-nav > li > a {
+            font-size: medium;
+        }
+    </style>
+
+    @*<script src="~/Scripts/PrintJs.js"></script>*@
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("TLAS ", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                    <li>@Html.ActionLink("Products", "Index", "Products")</li>
+                    <li>@Html.ActionLink("Bays", "Index", "Bays")</li>
+                    <li>@Html.ActionLink("Access Cards", "Index", "AccessCards")</li>
+                    }
+                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Carriers<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Carrier", "Index", "Carriers")</li>
+                            <li>@Html.ActionLink("Driver", "Index", "Drivers")</li>
+                            <li>@Html.ActionLink("Vehicle", "Index", "Vehicles")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Transactions<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Order", "Index", "Orders")</li>
+                            <li>@Html.ActionLink("Shipment", "Index", "Shipments")</li>
+                            
+                            @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                    {
+                            <li>@Html.ActionLink("Manual Entry", "Index", "ManualEntry")</li>
+                            
+                            
+                    }
+                            <li>@Html.ActionLink("Closed Shipments", "Home", "Shipments")</li>
+                            <li>@Html.ActionLink("Active Shipments", "ActiveShipments", "Shipments")</li>
+                        </ul>
+                    </li>
+                    
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Daily Loaded Report", "Index", "DailyReport")</li>
+                                <li>@Html.ActionLink("Monthly Loaded Report", "Index", "MonthlyReport")</li>
+                                <li>@Html.ActionLink("Shiftwise Loaded Report", "Index", "Shiftwise")</li>
+                                @*<li>@Html.ActionLink("Mogas Loaded Report", "Index", "MogasReport")</li>
+                                <li>@Html.ActionLink("HSD Loaded Report", "Index", "HSDReport")</li>*@
+                                @*<li>@Html.ActionLink("WeighBridge Loaded Report", "Index", "WBReport")</li>*@
+                                
+                            </ul>
+                        </li>
+                    }
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                      <li>@Html.ActionLink("Admin", "Index", "Account")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div style="position:relative;">
+        <img class="img-responsive" src="~/images/ProjHeaderBackImage.jpg" style="width:100%;height:88px;">
+        <img class="img-responsive" src="~/images/ogdclLogo.png" style="position: absolute;top: 0px;left: 4px;width: 242px;">
+    </div>
+    <div class="container body-content ">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p><span class="glyphicon glyphicon-copyright-mark"></span> @DateTime.Now.Year - Avanceon</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

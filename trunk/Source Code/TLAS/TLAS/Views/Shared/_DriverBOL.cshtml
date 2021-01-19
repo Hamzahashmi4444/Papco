@@ -1,0 +1,81 @@
+﻿<link href="~/Content/Bol.css" rel="stylesheet" />
+<div class="modal fade bootstrapmodaldriverbol">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:810px;">
+            <div class="container" id="PrintDriverBol">
+                <div class="modal-header">
+                    <img src="~/Content/Images/BolHeader.png" style="background-repeat: no-repeat;background-size: 100% 100%;height: 100px; width:100%;" />
+                </div>
+                <table style="width:98%;">
+                    <tbody>
+                        <tr style="line-height:40px;">
+                            <td style="text-align:center;background-color:#BFBFBF;"><strong style="position:relative;">Vehicle No: </strong></td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_Vehdriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Shipment No: </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_Shipdriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <strong>Customer: </strong> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_Custdriverbol"></label> </td>
+                        </tr>
+                        <tr style="line-height:40px;">
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Delivery Date: </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_DDatedriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <strong>Entry Time: </strong> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_EntTmedriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Exist Time: </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_ExtTimedriverbol"></label> </td>
+                        </tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr style="line-height:35px;">
+                            <td colspan="6" style="text-align:center;background-color:#BFBFBF;"><strong>Order Summary</strong></td>
+                        </tr>
+                        <tr style="line-height:20px;">
+                            <td style="text-align:center;background-color:#BFBFBF;"> <strong>Order Code </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Product </strong> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <strong>Order Qty </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Planned Qty </strong> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <strong>Actual Qty </strong> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <strong>Dip Qty </strong> </td>
+                        </tr>
+                        <tr style="line-height:40px;">
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_OdrCdedriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_proddriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_Qtydriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_PlnQtydriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#BFBFBF;"> <label class="control-label" id="lbl_ActQtydriverbol"></label> </td>
+                            <td style="text-align:center;background-color:#D9D9D9;"> <label class="control-label" id="lbl_ManualQtydriverbol"></label> </td>
+                        </tr>
+                        <tr style="line-height:60px;">
+                            <td colspan="4"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Density: _____________________</strong></td>
+                            <td colspan="2"> <strong>Signature: _____________________</strong> </td>
+                        </tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr><td colspan="6"></td></tr>
+                        <tr>
+                            <td colspan="2"><strong>Temperature: _____________________</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="modal-footer">
+                    <img src="~/Content/Images/BolFooter.png" style="background-repeat: no-repeat;background-size: 100% 100%;height: 70px; width:100%;" />
+                </div>
+            </div>
+            <div class="col-md-12" style="text-align:right;margin-bottom: 15px;">
+                <button type="button" class="btn btn-primary" onclick="PrintDriverBolContent()">
+                    Print
+                </button>
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function PrintDriverBolContent() {
+        $("#PrintDriverBol").printMe({
+            "path": [ "~/Content/DriverBol.css"] });
+    }
+</script>

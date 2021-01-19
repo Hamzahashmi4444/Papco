@@ -1,0 +1,67 @@
+﻿@using ReportViewerForMvc;
+@{
+    ViewBag.Title = "LPG Loaded Report";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="container">
+    <h2>LPG Loaded Report</h2><br />
+    @using (Html.BeginForm("Index", "LPGReport", FormMethod.Get))
+    {
+
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label for="prdName" class="col-md-3 control-label">Select Reporting Interval</label>
+                <div class="col-md-4">
+                    @Html.TextBox("SDate", "Select Start Date..", new { @class = "form-control", @id = "txt_Sdate" })
+                </div>
+                <div class="col-md-4 col-lg-pull-1">
+                    @Html.TextBox("EDate", "Select End Date..", new { @class = "form-control", @id = "txt_Edate" })
+                </div>
+                <div class="col-md-1 col-lg-pull-2">
+                    <button type="submit" class="btn btn-primary">Get Report</button>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-4">
+                    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+</div>
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#txt_Sdate').datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+
+        $('#txt_Edate').datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+
+    });
+
+
+</script>

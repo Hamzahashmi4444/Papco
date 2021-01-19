@@ -1,0 +1,350 @@
+﻿@model PagedList.IPagedList<TLAS.ViewModel.WeighbridgeViewModel>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+@{
+    ViewBag.Title = "WeighBridge";
+}
+<hr />
+<div class="container hidden-print">
+    <div class="col-md-7">
+        <h2>WeighBridge</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "WBridge", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Shipment ID", @placeholder = "Shipment ID" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-23px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+
+            }
+
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b title="Sort By ShipmentID">@Html.ActionLink("ShipmentID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Vehicle Code">@Html.ActionLink("Vehicle Code", "Index", new { sortOrder = ViewBag.VehicleSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Shipment Status">@Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created By">@Html.ActionLink("Created By", "Index", new { sortOrder = ViewBag.CreatedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created Date">@Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified By">@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified Date">@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("is Manual", "Index", new { sortOrder = ViewBag.IsManualSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr value="@item.ShipmentID" onclick="edit('@item.ShipmentID','@item.VehicleCode','@item.TareWeight','@item.LoadedWeight','@item.ActualWeight','@item.Status','@item.CreatedDate','@item.ModifiedDate','@item.AccessCardID','@item.CarrierName','@item.DriverName','@item.OrderCode','@item.OrderID','@item.Prodtype','@item.CustomerName','@item.OrderQty');">
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShipmentID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ismanual)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm("Create", "WBridge", FormMethod.Post, new { role = "form" }))
+    {
+        <div class="col-md-5">
+
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-4">
+                    <button type="button" class="btn btn-primary" id="bol" onclick="BoLPressed();" data-toggle="modal" data-target=".bootstrapmodal1">Print WeighBridge BoL</button>
+                </div>
+            </div>
+
+
+            <div class="form-horizontal">
+
+                @Html.HiddenFor(m => Model.FirstOrDefault().ShipmentID, new { @id = "shipId" })
+                <br/><br/><br/>
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Order ID</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().OrderID, new { htmlAttributes = new { @class = "form-control", @id = "OID", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Order Code</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().OrderCode, new { htmlAttributes = new { @class = "form-control", @id = "Ocode", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().OrderCode, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Vehicle Code</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().VehicleCode, new { htmlAttributes = new { @class = "form-control", @id = "VehicleId", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="drvName" class="col-md-4 control-label">Driver Name</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().DriverName, new { htmlAttributes = new { @class = "form-control", @id = "drvName", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Carrier Name</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CarrierName, new
+                   {
+                       htmlAttributes = new { @class = "form-control", @id = "CarrierId", @readonly = "readonly" }
+                   })
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">RFID Card No</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().AccessCardID, new { htmlAttributes = new { @class = "form-control", @id = "keyId", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Tare Weight</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().TareWeight, new { htmlAttributes = new { @class = "form-control", @id = "tareweight", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().TareWeight, "", new { @class = "text-danger" })
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loadedweight" class="col-md-4 control-label">Loaded Weight</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LoadedWeight, new { htmlAttributes = new { @class = "form-control", @id = "loadedweight", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="actualweight" class="col-md-4 control-label">Actual Weight</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().ActualWeight, new { htmlAttributes = new { @class = "form-control", @id = "actualweight", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">WeighBridge Status</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().Status, new { htmlAttributes = new { @class = "form-control", @id = "status", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Weigh-In DateTime</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CreatedDate, new { htmlAttributes = new { @class = "form-control", @id = "Widate", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Weigh-Out DateTime</label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(m => Model.FirstOrDefault().ModifiedDate, new { htmlAttributes = new { @class = "form-control", @id = "WoDate", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@Html.Partial("_WeighBOL")
+
+
+
+@section Scripts {
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqryUi")
+
+}
+
+<style type="text/css" media="print">
+    body * {
+        visibility: hidden;
+    }
+
+    
+
+    #printBOL, #printBOL * {
+        visibility: visible;
+    }
+
+    .BOL-content:before {
+        content: url(../../Content/Images/WeighBol.png);
+        background-repeat: no-repeat;
+        z-index: -99999;
+        width: 740px;
+        z-index: -99999;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        border:0px;
+    }
+
+    
+
+    #lbl_Ship {
+        padding-top: -1px;
+    }
+</style>
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoComplete", "WBridge"))",
+                data: { "term": request.term },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.length ; i++) {
+                    customer[i] = { label:data[i] };
+                }
+            }
+        });
+    response(customer);
+    }
+    });
+
+
+
+    function edit(ShipmentID, VehicleCode, TareWeight, LoadedWeight, ActualWeight, Status, CreatedDate, ModifiedDate, AccessCardID, CarrierName, DriverName, OrderCode, OrderID, Prodtype, CustomerName, OrderQty) {
+        debugger;
+        $("#shipId").val(ShipmentID)
+        $("#VehicleId").val(VehicleCode)
+        $("#drvName").val(DriverName)
+        $("#CarrierId").val(CarrierName)
+        $("#tareweight").val(TareWeight)
+        $("#loadedweight").val(LoadedWeight)
+        $("#actualweight").val(ActualWeight)
+        $("#status").val(Status)
+        $("#Widate").val(CreatedDate)
+        $("#WoDate").val(ModifiedDate)
+        $("#keyId").val(AccessCardID)
+        $("#Ocode").val(OrderCode);
+        $("#OID").val(OrderID);
+
+        $('#lbl_BolDate').text("")
+        $('#lbl_Vehbol').text("")
+        $('#lbl_Shipbol').text("")
+        $('#lbl_Driverbol').text("")
+        $('#lbl_Custbol').text("")
+        $('#lbl_Carrierbol').text("")
+        $('#lbl_Weighinbol').text("")
+        $('#lbl_Weighoutbol').text("")
+        $('#lbl_tarebol').text("")
+        $('#lbl_loadedbol').text("")
+        $('#lbl_OdrCdebol').text("")
+        $('#lbl_prodbol').text("")
+        $('#lbl_Qtybol').text("")
+        $('#lbl_ActQtybol').text("")
+
+        var d = new Date();
+        var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var date = d.getDate() + " " + month[d.getMonth()] + ", " + d.getFullYear();
+        var time = d.toLocaleTimeString().toLowerCase();
+        var boldate = date + " " + time ;
+
+        $('#lbl_BolDate').text(boldate)
+
+        $('#lbl_Vehbol').text(VehicleCode)
+        $('#lbl_Shipbol').text(ShipmentID)
+        $('#lbl_Driverbol').text(DriverName)
+        $('#lbl_Custbol').text(CustomerName)
+        $('#lbl_Carrierbol').text(CarrierName)
+        $('#lbl_Weighinbol').text(CreatedDate)
+        $('#lbl_Weighoutbol').text(ModifiedDate)
+        $('#lbl_tarebol').text(TareWeight)
+        $('#lbl_loadedbol').text(LoadedWeight)
+        $('#lbl_OdrCdebol').text(OrderCode)
+        $('#lbl_prodbol').text(Prodtype)
+        $('#lbl_Qtybol').text(OrderQty)
+        $('#lbl_ActQtybol').text(ActualWeight)
+
+
+
+    }
+
+
+</script>

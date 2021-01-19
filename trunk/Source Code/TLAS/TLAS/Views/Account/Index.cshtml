@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TLAS.Models.EditUserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Manage Users</h2>
+
+<p>
+    @Html.ActionLink("Create New User", "Register")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.UserName }) |*@ @*commnented by ahad as reported by IA*@
+            @Html.ActionLink("UserRoles", "UserRoles", new { id = item.UserName }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.UserName }) |
+            @Html.ActionLink("Change Password", "SetPassword","Manage", new { id = item.UserName },"") 
+
+        </td>
+    </tr>
+}
+
+</table>

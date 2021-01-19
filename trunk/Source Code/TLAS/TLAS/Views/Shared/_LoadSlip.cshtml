@@ -1,0 +1,234 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<div class="modal fade bootstrapmodal" id="printLoadingSlip">
+    <div class="modal-dialog">
+        <div class="modal-content LoadingSlip-content" id="printLoadingSlip" style="background-image:url(../../Content/Images/LoadSlip.png);z-index:-99999; background-repeat:no-repeat; width: 740px;-webkit-print-color-adjust: exact; ">
+
+            <div class="modal-body" style="height: 480px;">
+
+                <table style="width:700px; margin-top:90px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align:right; padding-right:8px;">
+                                <label class="control-label" id="lbl_LSDate" style="font-size: 13px;"></label>
+                            </td>
+                        </tr>
+                        <tr style="
+    /* padding-top: 10PX; */
+    /* VERTICAL-ALIGN: MIDDLE; */
+">
+                            <td style="width: 342px;text-indent: 69px;vertical-align: bottom;padding-top: 5px;">
+                                <label class="control-label" id="lbl_Ship" style="font-size: 13px;"></label>
+                            </td>
+                            <td style="
+    padding-top: 7px;
+">
+                                <label class="control-label" id="lbl_Cust" style="font-size: 13px; vertical-align: top; padding-left:120px;"></label>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 139px;padding-top: 7px;">
+                                <label class="control-label" id="lbl_Drvr" style="font-size: 13px;"></label>
+                            </td>
+                            <td style="padding-top: 7px;padding-left: 120px;">
+                                <label class="control-label" id="lbl_RFID" style="font-size: 13px;"></label>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="padding-top: 7px;padding-left: 139px;">
+                                <label class="control-label" id="lbl_Vno" style="font-size: 13px;"></label>
+                            </td>
+                            <td style="padding-top: 7px;padding-left: 132px;">
+                                <label class="control-label" id="lbl_CretedDte" style="font-size: 13px;">@User.Identity.GetUserName()</label>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" style=" padding-top: 41px; padding-left: 15px;">
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:170px;">
+                                                <label class="control-label" id="lbl_Ocode" style="font-size: 13px;"></label>
+                                            </td>
+                                            <td style="width:170px;">
+                                                <label class="control-label" id="lbl_Prod" style="font-size: 13px;"></label>
+                                            </td>
+                                            <td style="width:170px;">
+                                                <label class="control-label" id="lbl_Qty" style="font-size: 13px;"></label>
+                                            </td>
+                                            <td style="width:170px;">
+                                                <label class="control-label" id="lbl_Bay" style="font-size: 13px;"></label>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+
+                            <td colspan="2" style="padding-top:29px;">
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td style="
+    /* padding-left: 72px; */
+    width: 169px;
+    padding-left: 85px;
+">
+                                                <label class="control-label" id="lbl_Comp1"></label>
+                                            </td>
+                                            <td style="
+    width: 170px;
+    padding-left: 88px;
+">
+                                                <label class="control-label" id="lbl_Comp2"></label>
+                                            </td>
+                                            <td style="
+    width: 171px;
+    padding-left: 89px;
+">
+                                                <label class="control-label" id="lbl_Comp3"></label>
+                                            </td>
+                                            <td style="
+    padding-left: 89px;
+">
+                                                <label class="control-label" id="lbl_Comp4"></label>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty1" style="
+    padding-left: 85px;
+    padding-top: -5px;
+    margin-top: -10px;
+    position: relative;
+    top: -7px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty2" style="
+    padding-left: 88px;
+    position: relative;
+    top: -7px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty3" style="
+    padding-left: 88px;
+    position: relative;
+    top: -7px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty4" style="
+    position: relative;
+    top: -7px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <label class="control-label" id="lbl_Comp5" style="
+    position: relative;
+    top: -16px;
+    padding-left: 85px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_Comp6" style="
+    position: relative;
+    top: -16px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_Comp7" style="
+    position: relative;
+    top: -16px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_Comp8" style="
+    position: relative;
+    top: -16px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty5" style="
+    position: relative;
+    top: -23px;
+    padding-left: 85px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty6" style="
+    position: relative;
+    top: -23px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty7" style="
+    position: relative;
+    top: -23px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+                                            <td>
+                                                <label class="control-label" id="lbl_CompPQty8" style="
+    position: relative;
+    top: -23px;
+    padding-left: 88px;
+"></label>
+                                            </td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+                <label class="control-label" id="lbl_signature" style="position: absolute;top: 489px;left: 432px;font-size: 14px;">Signature: _____________________</label>
+
+
+            </div>
+
+            <div class="modal-footer hidden-print" style="border:none;">
+
+                <button class="btn btn-primary" onclick="window.print();"> Print </button>
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

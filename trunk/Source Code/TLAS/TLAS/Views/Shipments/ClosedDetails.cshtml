@@ -1,0 +1,315 @@
+﻿@model IEnumerable<TLAS.Models.Shipment>
+@using Microsoft.AspNet.Identity;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<hr />
+<div class="container" >
+    <h2>Closed Shipment Details</h2>
+    @*<button type="button" class="btn btn-primary" id="bol" onclick="BoLPressed();" data-toggle="modal" data-target=".bootstrapmodal1">Print BoL</button>*@
+    <hr />
+    <div class="col-md-6">
+
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="custName" class="col-md-4 control-label">Customer Name</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="carrName" class="col-md-4 control-label">Carrier Name</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().CarrierName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="custName" class="col-md-4 control-label">Vehicle Code</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().VehicleCode, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="custName" class="col-md-4 control-label">Driver Name</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().DriverName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label for="licDate" class="col-md-4 control-label">Date of Shipment</label>
+                <div class="col-md-4">
+                    @{
+                        string shipmentdatereuse = null;
+                        try
+                        {
+                            if (Model.FirstOrDefault().ShipmentDate != null)
+                            {
+                                shipmentdatereuse = Convert.ToString(Model.FirstOrDefault().ShipmentDate.Value.ToShortDateString());
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            shipmentdatereuse = null;
+                        }
+
+                    }
+                    @Html.EditorFor(m => Model.FirstOrDefault().ShipmentDate, new { htmlAttributes = new { @class = "form-control", @Value = shipmentdatereuse } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="compSelect" class="col-md-4 control-label">Bay No</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().BayID, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="compSelect" class="col-md-4 control-label">RFID Card No</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(m => Model.FirstOrDefault().AccessCardID, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-md-4 control-label">Manual Entry</label>
+                <div class="col-md-4">
+                    @Html.CheckBoxFor(m => Model.FirstOrDefault().IsManual, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container">
+        <div class="col-md-10">
+            <h2>Compartment</h2>
+            <div class="table-responsive">
+                <table class="table table-condensed table-bordered table-hover table-striped">
+                    <thead>
+                        <tr class="btn-primary">
+                            <th><b>Compartment Code</b></th>
+                            <th><b>Order Code</b></th>
+                            <th><b>Product</b></th>
+                            <th><b>Ordered Qty</b></th>
+                            <th><b>Capacity</b></th>
+                            <th><b>Planned Qty</b></th>
+                            <th><b>Actual Qty</b></th>
+                            <th><b>Pre DIP</b></th>
+                            <th><b>Post Dip</b></th>
+                            <th><b>Difference</b></th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="compTable">
+
+                        @{
+                            try
+                            {
+                                int i = 0;
+                                var compData = Model.FirstOrDefault().ShipmentCompartments.Where(p => p.ShipmentID == Model.FirstOrDefault().ID);
+                                foreach (var item in compData)
+                                {
+                                    <tr>
+                                        <td><span>@Html.TextBox("compCode" + i, item.CompartmentCode, new { @class = "form-control", @id = "compCode" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("odrCode" + i, item.Shipment.Order.OrderCode, new { @class = "form-control", @id = "odrCode" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("prd" + i, item.Product == "1" ? "MoGas" : "HSD", new { @class = "form-control", @id = "prd" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("odrQty" + i, item.OrderedQuantity, new { @class = "form-control", @id = "odrQty" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compCapacity" + i, item.Capacity, new { @class = "form-control", @id = "compCapacity" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compPlannedQty" + i, item.PlannedQuantity, new { @class = "form-control", @id = "compPlannedQty" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compActualQty" + i, item.ActualBCUQuantity, new { @class = "form-control", @id = "compActualQty" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compPreDipQty" + i, item.PreDip, new { @class = "form-control", @id = "compPreDipQty" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compPostDipQty" + i, item.PostDip, new { @class = "form-control", @id = "compPostDipQty" + i, @readonly = "readonly" })</span></td>
+                                        <td><span>@Html.TextBox("compDeltaQty" + i, item.Delta, new { @class = "form-control", @id = "compDeltaQty" + i, @readonly = "readonly" })</span></td>
+
+
+                                    </tr>
+                                    i++;
+
+
+                                }
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="modal fade bootstrapmodal1" id="printBOL">
+        <div class="modal-dialog">
+            <div class="modal-content BOL-content" id="printBOL" style="background-image:url(../../Content/Images/Bol.png); z-index:-99999; background-repeat:no-repeat; width: 760px;-webkit-print-color-adjust: exact; ">
+
+                <div class="modal-body" style="height: 478px;">
+
+                    <label class="control-label" id="lbl_BolDate" style="position: absolute;top: 110px;/* left: 185px; */font-size: 13px;right: 21px;"></label>
+
+                    <label class="control-label" id="lbl_Vehbol" style="position: absolute;top: 139px;left: 110px;font-size: 13px;">@Model.FirstOrDefault().VehicleCode</label>
+                    <label class="control-label" id="lbl_Shipbol" style="position: absolute;top: 139px;left: 367px;font-size: 13px;">@Model.FirstOrDefault().ID</label>
+                    <label class="control-label" id="lbl_Custbol" style="position: absolute;top: 139px;left: 555px;font-size: 13px;">@Model.FirstOrDefault().CustomerName</label>
+
+                    <label class="control-label" id="lbl_DDatebol" style="position: absolute;top: 173px;left: 110px;font-size: 13px;">@Model.FirstOrDefault().ShipmentDate</label>
+                    <label class="control-label" id="lbl_EntTmebol" style="position: absolute;top: 173px;left: 327px;font-size: 13px;">@Model.FirstOrDefault().CreatedDate</label>
+                    <label class="control-label" id="lbl_ExtTimebol" style="position: absolute;top: 173px;left: 556px;font-size: 13px;">@Model.FirstOrDefault().ModifiedDate</label>
+
+
+                    <label class="control-label" id="lbl_OdrCdebol" style="position: absolute;top: 258px;left: 30px;font-size: 13px;">@Model.FirstOrDefault().Order.OrderCode</label>
+                    <label class="control-label" id="lbl_prodbol" style="position: absolute;top: 258px;left: 140px;font-size: 13px;">@(Model.FirstOrDefault().ProductID == 1 ? "LPG" : "Condensate")</label>
+                    <label class="control-label" id="lbl_Qtybol" style="position: absolute;top: 258px;left: 265px;font-size: 13px;">@Model.FirstOrDefault().Order.OrderQty</label>
+                    <label class="control-label" id="lbl_PlnQtybol" style="position: absolute;top: 258px;left: 380px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_ActQtybol" style="position: absolute;top: 258px;left: 497px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_ManualQtybol" style="position: absolute;top: 258px;left: 617px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol1" style="position: absolute;top: 311px;left: 100px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol1" style="position: absolute;top: 332px;left: 100px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol1" style="position: absolute;top: 351px;left: 100px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol2" style="position: absolute;top: 312px;left: 272px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol2" style="position: absolute;top: 332px;left: 272px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol2" style="position: absolute;top: 351px;left: 272px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol3" style="position: absolute;top: 312px;left: 452px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol3" style="position: absolute;top: 333px;left: 452px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol3" style="position: absolute;top: 351px;left: 453px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol4" style="position: absolute;top: 312px;right: 124px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol4" style="position: absolute;top: 333px;left: 627px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol4" style="position: absolute;top: 351px;left: 628px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol5" style="position: absolute;top: 380px;left: 102px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol5" style="position: absolute;top: 401px;left: 102px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol5" style="position: absolute;top: 422px;left: 101px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol6" style="position: absolute;top: 380px;left: 274px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol6" style="position: absolute;top: 401px;left: 274px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol6" style="position: absolute;top: 422px;left: 274px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol7" style="position: absolute;top: 380px;left: 452px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol7" style="position: absolute;top: 401px;left: 452px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol7" style="position: absolute;top: 422px;left: 452px;font-size: 13px;"></label>
+
+                    <label class="control-label" id="lbl_Compidbol8" style="position: absolute;top: 380px;left: 627px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CPlnQtybol8" style="position: absolute;top: 401px;left: 627px;font-size: 13px;"></label>
+                    <label class="control-label" id="lbl_CActQtybol8" style="position: absolute;top: 422px;left: 627px;font-size: 13px;"></label>
+                    <br /> <br />
+                    <label class="control-label" id="lbl_signature" style="position: absolute;top: 489px;left: 432px;font-size: 14px;">Signature: _____________________</label>
+
+
+
+                </div>
+
+                <div class="modal-footer hidden-print" style="border:none;">
+
+                    <button class="btn btn-primary" onclick="window.print();"> Print </button>
+                    <button class="btn btn-default" data-dismiss="modal">cancel</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <style type="text/css" media="print">
+        body * {
+            visibility: hidden;
+        }
+
+        #printLoadingSlip, #printLoadingSlip * {
+            visibility: visible;
+        }
+
+
+        #printBOL, #printBOL * {
+            visibility: visible;
+        }
+
+        .BOL-content:before {
+            content: url(images/Bol.png);
+            background-repeat: no-repeat;
+            z-index: -99999;
+            width: 740px;
+            z-index: -99999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        .LoadingSlip-content:before {
+            content: url(Images/LoadSlip.png);
+            background-repeat: no-repeat;
+            z-index: -99999;
+            width: 740px;
+            z-index: -99999;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+
+
+        #lbl_Ship {
+            padding-top: -1px;
+        }
+    </style>
+    <style type="text/css">
+        td {
+            border: 1px solid transparent;
+        }
+    </style>
+    <script type="text/javascript">
+        function BoLPressed() {
+
+            debugger;
+            for (k = 1; k < 9; k++) {
+                $('#lbl_Compidbol' + k).text(" ");
+                $('#lbl_CActQtybol' + k).text(" ");
+                $('#lbl_CPlnQtybol' + k).text(" ");
+            }
+            var countTr = $('#compTable tr').length;
+            var j = 0;
+            var sumOfPlannedQty = 0;
+            var sumOfActualQty = 0;
+            var sumOfManualQty = 0;
+            for (var i = 0; i < countTr; i++) {
+
+
+                if ($.isNumeric(parseInt($('#compPlannedQty' + i).val()))) {
+                    sumOfActualQty = sumOfActualQty + parseInt($('#compActualQty' + i).val());
+                    sumOfPlannedQty = sumOfPlannedQty + parseInt($('#compPlannedQty' + i).val());
+                    j++;
+                    $('#lbl_Compidbol' + j).text(parseInt($('#compCode' + i).val()))
+                    $('#lbl_CActQtybol' + j).text(parseInt($('#compActualQty' + i).val()))
+
+                    //$('#lbl_Comp' + j).text(parseInt($('#compCode' + i).val()))
+                    $('#lbl_CPlnQtybol' + j).text(parseInt($('#compPlannedQty' + i).val()))
+
+
+                }
+                if ($.isNumeric(parseInt($('#compPostDipQty' + i).val()))) {
+                    sumOfManualQty = sumOfManualQty + parseInt($('#compPostDipQty' + i).val());
+                }
+            }
+            $("#lbl_PlnQtybol").text(sumOfPlannedQty);
+            $("#lbl_ActQtybol").text(sumOfActualQty);
+            $("#lbl_ManualQtybol").text(sumOfManualQty);
+        }
+    </script>
+
+    </div>

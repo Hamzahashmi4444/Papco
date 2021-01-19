@@ -1,0 +1,250 @@
+﻿@model IEnumerable<TLAS.Models.Trailer>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+@{
+    ViewBag.Title = "Trailer";
+}
+<hr />
+@{
+                    string traId;
+                    string traCode;;
+                    string loadingType;
+                    string CreatedBy;
+                    DateTime? CreatedDate;
+                    string ModifiedBy;
+                    DateTime? ModifiedDate;
+    try
+    {
+        traId = Model.FirstOrDefault().TrailerID.ToString();
+        traCode = Model.FirstOrDefault().TrailerCode.ToString();
+        loadingType = (Model.FirstOrDefault().LoadingType.Equals(true)) ? "Top" : "Bottom";
+
+        CreatedBy = Model.FirstOrDefault().CreatedBy;
+        ModifiedBy = Model.FirstOrDefault().ModifiedBy;
+        CreatedDate = Model.FirstOrDefault().CreatedDate;
+        ModifiedDate = Model.FirstOrDefault().ModifiedDate;
+
+    }
+    catch (Exception)
+    {
+
+        traId = null;
+        traCode = null;
+        loadingType = null;
+
+         CreatedBy = null;
+         CreatedDate=null;
+         ModifiedBy=null;
+         ModifiedDate=null;
+    }
+}
+        <div class="container" >
+    <div class="col-md-6">
+        <h2>Bowser</h2>
+        <table class="table table-condensed table-bordered table-hover table-striped">
+            <thead>
+                <tr class="btn-primary">
+                    <th><b>ID</b></th>
+                    <th><b>Bowser Code</b></th>  @*Trailer code change to Bowser code*@
+                    <th><b>Loading Type</b></th>
+
+
+                    <th><b>Created By</b></th>
+                    <th><b>Created Date</b></th>
+                    <th><b>Modified By</b></th>
+                    <th><b>Modified Date</b></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@traId</td>
+                    <td>@traCode</td>
+                    <td>@loadingType</td>
+
+                    <td>@CreatedBy</td>
+                    <td>@CreatedDate</td>
+                    <td>@ModifiedBy</td>
+                    <td>@ModifiedDate</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="container">
+            <h2>Compartment</h2>
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-primary">
+                        <th><b>Bowser Code</b></th>   @*Trailer code change to Bowser code*@
+                        <th><b>Compartment Code</b></th>
+                        <th><b>Capacity</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        string compTraCode = traCode;
+                        // string compCode;
+                        //string compCapacity;
+                        try
+                        {
+                            var compData = Model.FirstOrDefault().Compartments.Where(p => p.TrailerID == p.Trailer.TrailerID);
+                            foreach (var item in compData)
+                            {
+                                <tr>
+                                    <td><span>@compTraCode</span></td>
+                                    <td><span>@item.CompartmentCode</span></td>
+                                    <td><span>@item.Capactiy</span></td>
+                                </tr>
+
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                            //compTraCode = null;
+                            //compCode = null;
+                            //compCapacity = null;
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @*@{
+            DateTime createdDate;
+            try
+            {
+                createdDate = Model.FirstOrDefault().CreatedDate;
+            }
+            catch
+            {
+                createdDate = System.DateTime.Now;
+
+            }
+        }*@
+    @using (Html.BeginForm("Create", "Trailers", FormMethod.Post))
+    {
+        <div class="col-md-6">
+            <div class="form-group ">
+                <br /><br /><br />
+                <div class="btn-group col-md-offset-4">
+                    @*<button type="button" class="btn btn-primary" onclick="clearTrailor();">New</button>*@
+                    <button type="submit" class="btn btn-primary" id="save" onclick="setTraId();">Save</button>
+                    @*<button type="button" class="btn btn-primary" id="delete" onclick="delRecTrailor();" disabled>Delete</button>*@
+                    @Html.ActionLink("Vehicles", "Index", "Vehicles", null, new { @class = "btn btn-primary" })
+                    <button type="button" class="btn btn-primary" id="compBtn" onclick="compNaviagte();">Compartment</button>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                    @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @Value = createdDate })*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().TrailerID, new { @id = "trailorId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().VehicleID, new { @id = "vehicleID", @Value = ViewData["vehicleID"] })
+                <div class="form-group">
+                    <label for="vehCode" class="col-md-4 control-label">Vehicle Code</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => m.FirstOrDefault().Vehicle.VehicleCode, new { htmlAttributes = new { @id = "vehicleCode", @class = "form-control", @Value = ViewData["vehicleCode"], @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="traCode" class="col-md-4 control-label">Bowser Code</label>     @*Trailer code change to Bowser code*@
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().TrailerCode, new { htmlAttributes = new { @class = "form-control", @id = "traCode" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().TrailerCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loadTypeSelect" class="col-md-4 control-label">Loading Type</label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().LoadingType, ViewData["loadingType"] as SelectList, new { @class = "form-control", @id = "loadType" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loadTypeSelect" class="col-md-4 control-label">Bowser Calibration Certificate #</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().BowserCalibrationCertificate, new { htmlAttributes = new { @class = "form-control"} })
+                        @*@Html.ValidationMessageFor(m => Model.FirstOrDefault().TrailerCode, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                @{
+                    string licenseIssueDate = null;
+                    try
+                    {
+                        if (Model.FirstOrDefault().CertificateExpiryDate != null)
+                        {
+                            licenseIssueDate = Convert.ToString(Model.FirstOrDefault().CertificateExpiryDate.ToShortDateString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        licenseIssueDate = null;
+                    }
+                }
+                <div class="form-group">
+                    <label for="expDate" class="col-md-4 control-label">Certificate Expiry Date<b style="color:red"></b></label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CertificateExpiryDate, new { htmlAttributes = new { @class = "form-control"}, @Value = licenseIssueDate })
+                        @*@Html.ValidationMessageFor(m => Model.FirstOrDefault().TrailerCode, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#trailorId").val() == " ") {
+            //$("#delete").prop("disabled", true);
+            $("#compBtn").prop("disabled", true);
+        }
+        else {
+            //$("#delete").prop("disabled", false);
+            $("#compBtn").prop("disabled", false);
+        }
+    });
+    function compNaviagte() {
+        var routeValue1 = $("#trailorId").val();
+        var route = '@Url.Action("Index","Compartments")' + '/Index/' + routeValue1;
+        window.location.href = route;
+        //$(this).attr("href", route);
+    }
+    function setTraId() {
+        if ($("#trailorId").val().length == 0)
+        {
+            $("#trailorId").val(0);
+        }
+    }
+    function clearTrailor() {
+        $("#trailorId").val(0);
+        $("#traCode").val("");
+    }
+    function delRecTrailor() {
+        var localVehId = $("#vehicleID").val();
+        var localId = $("#trailorId").val();
+        var localName = $("#traCode").val();
+
+        var r = confirm("Do you want to delete: " + localName);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                //url: "/Trailers/Delete/" + localId + "?vehId=" + localVehId,
+                url: '@Url.Action("Delete", "Trailers")',
+                data: { id: localId, vehId: localVehId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+
+
+

@@ -1,0 +1,476 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Driver>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+@{
+    ViewBag.Title = "Driver";
+}
+<hr />
+
+
+
+<div class="container">
+    <div class="col-md-8">
+        <h2>Drivers</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "Drivers", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Driver CNIC", @placeholder = "Driver CNIC" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-40px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b>@Html.ActionLink("Driver CNIC", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Driver Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Carrier Name", "Index", new { sortOrder = ViewBag.CarrierSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                        <th><b title="Sort By Created By">@Html.ActionLink("Created By", "Index", new { sortOrder = ViewBag.CreatedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Created Date">@Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified By">@Html.ActionLink("Modified By", "Index", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b title="Sort By Modified Date">@Html.ActionLink("Modified Date", "Index", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                        <th><b>@Html.ActionLink("Active", "Index", new { sortOrder = ViewBag.ActiveSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        string LIDate, LEDate;
+                        if (item.LicenseIDate != null)
+                        {
+                            LIDate = item.LicenseIDate.ToShortDateString();
+                        }
+                        else
+                        {
+                            LIDate = null;
+                        }
+                        if (item.LicenseEDate != null)
+                        {
+                            LEDate = item.LicenseEDate.ToShortDateString();
+                        }
+                        else
+                        {
+                            LEDate = null;
+                        }
+                        var rowV = Convert.ToBase64String(item.RowVersion);
+                        <tr value="@item.CarrierID"  style="color: @(item.Active == false ? "red" : "black")" onclick="edit('@item.CarrierID','@item.Carrier.CarrierName','@item.DriverID','@item.DriverName','@item.LicenseNo','@LIDate','@LEDate','@item.CNIC','@item.Mobile','@item.Active','@item.LastActive','@item.Remarks','@rowV');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CNIC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DriverName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Carrier.CarrierName)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+    @*@{
+            DateTime createdDate;
+           // string carrierName;
+            //string carrierValue;
+            try
+            {
+                createdDate = Model.FirstOrDefault().CreatedDate;
+                ////carrierName =  Model.FirstOrDefault().Carrier.CarrierName;
+                //carrierValue = Model.FirstOrDefault().Carrier.CarrierID.ToString();
+            }
+            catch
+            {
+                createdDate = System.DateTime.Now;
+                ////carrierName = null;
+                //carrierValue = null;
+
+            }
+        }*@
+
+
+
+    @using (Html.BeginForm("Create", "Drivers", FormMethod.Post, new { role = "form", @id = "formDriver" }))
+    {
+        <br /><br />
+        <div class="col-md-4">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Label(" ", new { @id = "errorMessagesOnSave", Style = "color: red" })
+            @Html.HiddenFor(model => Model.FirstOrDefault().RowVersion, new { @class = "form-control", @id = "hdnRowVersion" })
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-4" style="padding-left:11px;">
+                    <button type="button" class="btn btn-primary" onclick="clearNew();">New</button>
+                    <button type="submit" class="btn btn-primary" name="save" value="save" id="save" onclick="setCarrierId();">Save</button>
+                    @*<button type="button" class="btn btn-primary" id="delete" onclick="deleteRecord();" disabled>Delete</button>*@
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @*@Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                    @Html.HiddenFor(m => Model.FirstOrDefault().CreatedDate, new { @Value = createdDate })*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().DriverID, new { @id = "drvId" })
+                @{
+                    try
+                    {
+                        @Html.Hidden("SomeName", Model.FirstOrDefault().CarrierID, new { @id = "hiddenCarrierId" })
+                    }
+                    catch (Exception)
+                    {
+                        @Html.Hidden("SomeName", 0, new { @id = "hiddenCarrierId" })
+                    }
+                }
+
+                <div class="form-group">
+                    <label for="compSelect" class="col-md-4 control-label">Carrier Name<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().CarrierID, ViewData["CarrierID"] as SelectList, "Select Carrier", new { @class = "form-control", @id = "carrierName" })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CarrierID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="custName" class="col-md-4 control-label">Driver Name<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().DriverName, new { htmlAttributes = new { @class = "form-control", @id = "name" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().DriverName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="licNo" class="col-md-4 control-label">License No<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseNo, new { htmlAttributes = new { @class = "form-control", @id = "licNo" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @{
+                    string licenseIssueDate = null;
+                    try
+                    {
+                        if (Model.FirstOrDefault().LicenseIDate != null)
+                        {
+                            licenseIssueDate = Convert.ToString(Model.FirstOrDefault().LicenseIDate.ToShortDateString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        licenseIssueDate = null;
+                    }
+                }
+                <div class="form-group">
+                    <label for="licDate" class="col-md-4 control-label">License Issue Date<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseIDate, new { htmlAttributes = new { @class = "form-control", @id = "licIDate", @Value = licenseIssueDate } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseIDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @{
+                    string licenseExpiryDate = null;
+                    try
+                    {
+                        if (Model.FirstOrDefault().LicenseEDate != null)
+                        {
+                            licenseExpiryDate = Convert.ToString(Model.FirstOrDefault().LicenseEDate.ToShortDateString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        licenseExpiryDate = null;
+                    }
+                }
+                <div class="form-group">
+                    <label for="expDate" class="col-md-4 control-label">License Expiry Date<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().LicenseEDate, new { htmlAttributes = new { @class = "form-control", @id = "licEDate", @Value = licenseExpiryDate } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().LicenseEDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cnic" class="col-md-4 control-label">CNIC<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CNIC, new { htmlAttributes = new { @class = "form-control", @id = "cnic" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().CNIC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobile" class="col-md-4 control-label">Mobile<b style="color:red">*</b></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => Model.FirstOrDefault().Mobile, new { htmlAttributes = new { @class = "form-control", @id = "mobile" } })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().Mobile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Active</label>
+                    <div class="col-md-8">
+                        @Html.CheckBoxFor(m => Model.FirstOrDefault().Active, new { @id = "active", htmlAttributes = new { @class = "form-control" } })
+                        @Html.Label(" Blacklist")
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label for="lastActive" class="col-md-4 control-label">Last Active</label>
+                        <div class="col-md-4">
+                            @Html.EditorFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @class = "form-control", @id = "lactive" } })
+                            @Html.ValidationMessageFor(m => Model.FirstOrDefault().LastActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                @Html.HiddenFor(m => Model.FirstOrDefault().LastActive, new { htmlAttributes = new { @id = "lactive" } })
+                <div class="form-group">
+                    <label for="remarks" class="col-md-4 control-label">Remarks</label>
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(m => Model.FirstOrDefault().Remarks, new { @class = "form-control", @id = "remarks", cols = 39, @rows = 6 })
+                        @Html.ValidationMessageFor(m => Model.FirstOrDefault().Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+                    }
+</div>
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+<script type="text/javascript">
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoComplete", "Drivers"))",
+                data: { "term": request.term },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.length ; i++) {
+                    customer[i] = { label:data[i] };
+                }
+            }
+        });
+    response(customer);
+    }
+    });
+
+    $(function () {
+
+        $("#carrierName").val($("#hiddenCarrierId").val());
+        /////////////////////////////////////////////////
+        $("#formDriver").submit(function (e) {
+            debugger;
+            var isValid = $('#formDriver').valid();
+            if (!isValid) {
+                e.preventDefault(); //prevent the default action
+            }
+            else
+            {
+                e.preventDefault();
+                if (new Date() > new Date($('#licEDate').val()) && $('#licEDate').val() != null) {
+                    $("#errorMessagesOnSave").text("Driver License is expired");
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("UniqueCNIC", "Drivers")',
+                    data: {
+                        cnic: $("#cnic").val(),
+                        Id: $("#drvId").val()
+                    },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    if (data == false) {
+                        $("#errorMessagesOnSave").text("Driver CNIC is not unique");
+                        return;
+                    }
+                    else {
+                        $("#errorMessagesOnSave").text(" ");
+                        $("#formDriver").unbind('submit').submit();
+                    }
+
+                })
+            }
+
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if ($("#drvId").val() == "") {
+            $("#save").prop("disabled", true);
+            // $("#delete").prop("disabled", true);
+        }
+        else {
+            $("#save").prop("disabled", false);
+            //$("#delete").prop("disabled", false);
+        }
+
+        $('#licIDate').datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+        $('#licEDate').datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+        $('#lactive').datetimepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm:ss tt',
+            dateFormat: 'mm/dd/yy',
+            timeInput: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        //$.validator.addMethod("greaterThan",
+        //                function (value, element, params) {
+        //                    debugger;
+        //                    //var d = new Date();
+        //                    //return new Date(value) > currentDate;
+        //                    if (!Date.parse(value))
+        //                    {
+        //                        return;
+        //                    }
+        //                    //return !isNaN(d.valueOf());
+
+        //                    if (!/Invalid|NaN/.test(new Date(value))) {
+        //                        // return new Date(value) > new Date($(params).val());
+        //                        return (new Date(value) > new Date()) && (new Date(value) > new Date($(params).val()));
+        //                    }
+
+
+        //                    //return isNaN(value) && isNaN($(params).val())
+        //                    //    || (Number(value) > Number($(params).val()));
+
+        //                }, 'Expiry date must be greater than today.');
+        //$.validator.addMethod("LessThan",
+        //                function (value, element, params) {
+        //                    debugger;
+        //                    //var d = new Date();
+        //                    //return new Date(value) > currentDate;
+        //                    if (!Date.parse(value)) {
+        //                        return;
+        //                    }
+        //                    //return !isNaN(d.valueOf());
+
+        //                    if (!/Invalid|NaN/.test(new Date(value))) {
+        //                        // return new Date(value) > new Date($(params).val());
+        //                        return new Date(value) < new Date($(params).val());
+        //                    }
+
+
+        //                    //return isNaN(value) && isNaN($(params).val())
+        //                    //    || (Number(value) > Number($(params).val()));
+
+        //                }, 'Issue Date Should  be Less Than Expiry Date.');
+        //$('#formDriver').validate({
+        //    errorClass: "text-danger",
+        //    debug: true,
+        //    rules: {
+        //        LicenseEDate: {
+        //            greaterThan: "#licIDate",
+        //        },
+        //        LicenseIDate: {
+        //            LessThan: "#licEDate",
+        //        }
+
+        //    }
+        //});
+    });
+    function edit(cId, cName, dId, dName, licNo, licIdate, licEdate, cnic, mobile, active, lastActive, Remarks,RowVersion) {
+        // debugger;
+        $("#drvId").val(dId)
+        $("#carrierName").val(cId)
+        //$("#carrierName option:selected").text(cName)
+        //$("#carrierName option:selected").val(cId)
+        $("#name").val(dName)
+        $("#licNo").val(licNo)
+        $("#licIDate").val(licIdate)
+        $("#licEDate").val(licEdate)
+        $("#cnic").val(cnic)
+        $("#mobile").val(mobile)
+        $("#hdnRowVersion").val(RowVersion)
+        if (active == "onclick") {
+            $("#active").prop('checked', true);
+        }
+        else {
+            $("#active").prop('checked', false);
+        }
+        $("#lactive").val(lastActive)
+        $("#remarks").val(Remarks)
+    }
+    function clearNew() {
+        $("#save").prop("disabled", false);
+        $("#drvId").val(0)
+        $("#carrierName").val("")
+        $("#name").val("")
+        $("#licNo").val("")
+        $("#licIDate").val("")
+        $("#licEDate").val("")
+        $("#cnic").val("")
+        $("#mobile").val("")
+        $("#lactive").val("")
+        $("#remarks").val("")
+    }
+    function setCarrierId() {
+        $("#carrierId").val($('#carrierName').val())
+    }
+    function deleteRecord() {
+        var localId = $("#drvId").val();
+        var localName = $("#name").val();
+        var r = confirm("Do you want to delete: " + localName);
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete", "Drivers")',
+                data: { id: localId },
+                success: function refresh() {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+
+
+
+

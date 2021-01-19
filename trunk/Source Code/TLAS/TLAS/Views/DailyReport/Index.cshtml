@@ -1,0 +1,64 @@
+﻿@using ReportViewerForMvc;
+@{
+    ViewBag.Title = "Report";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="container">
+    <h2>Daily Loaded Report</h2>
+    @using (Html.BeginForm("Index", "DailyReport", FormMethod.Get))
+    {
+
+        ViewBag.PickDate = "Select DateTime....";
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label for="prdName" class="col-md-3 control-label">Select DateTime</label>
+                <div class="col-md-2">
+                    @Html.TextBox("ReportDate", ViewBag.PickDate as string, new { @class = "form-control", @id = "DailyRpt" })
+                </div>
+                <label for="prdName" class="col-md-1 control-label">Load Type</label>
+                <div class="col-md-1">
+                    @Html.DropDownList("DrpdwnLoadtype", new List<SelectListItem>() { new SelectListItem { Text = "All", Value = "-1" }, new SelectListItem { Text = "BCU Entry", Value = "0" }, new SelectListItem { Text = "Manual Entry", Value = "1" } }, new { @class = "form-control", @id = "DrpdwnLoadtype" })
+                </div>
+                <div class="col-md-1 ">
+                    <button type="submit" class="btn btn-primary">Get Report</button>
+                </div>
+            </div>
+
+      
+
+            <div class="form-group">
+
+                <div class="col-md-4">
+                    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+</div>
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#DailyRpt').datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-15:+15"
+        });
+    });
+
+
+</script>

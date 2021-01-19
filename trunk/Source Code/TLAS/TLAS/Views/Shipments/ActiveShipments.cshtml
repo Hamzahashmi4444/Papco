@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Shipment>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script src="~/Scripts/jquery-ui.js"></script>
+@{
+    ViewBag.Title = "Active Shipments";
+}
+<hr />
+<div class="container" >
+    <div class="col-md-12">
+        <h2>Active Shipments</h2>
+        @using (Html.BeginForm("ActiveShipments", "Shipments", FormMethod.Get))
+        {
+            <p>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Order Code", @placeholder = "Order Code" })
+                        </div>
+                        <div class="col-md-1" style="margin-left:-23px;">
+                            <input type="submit" value="Search" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </p>
+        }
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-condensed table-bordered table-hover table-striped">
+            <thead>
+                <tr class="btn-default">
+                    <th><b title="Sort By Shipment ID">@Html.ActionLink("Shipment ID", "ActiveShipments", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Order Code">@Html.ActionLink("Order Code", "ActiveShipments", new { sortOrder = ViewBag.OdrCodeSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                    <th><b title="Sort By Product">@Html.ActionLink("Product", "ActiveShipments", new { sortOrder = ViewBag.ProductSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Bay">@Html.ActionLink("Bay", "ActiveShipments", new { sortOrder = ViewBag.BaySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                    <th><b title="Sort By Shipment Status">@Html.ActionLink("Shipment Status", "ActiveShipments", new { sortOrder = ViewBag.ShipStatusSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By WeighBridge Status">@Html.ActionLink("WeighBridge Status", "ActiveShipments", new { sortOrder = ViewBag.WeighStatusSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+                    <th><b title="Sort By Vehicle Code">@Html.ActionLink("Vehicle Code", "ActiveShipments", new { sortOrder = ViewBag.VehCodeSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Created By">@Html.ActionLink("Created By", "ActiveShipments", new { sortOrder = ViewBag.CreatedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Created Date">@Html.ActionLink("Created Date", "ActiveShipments", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Modified By">@Html.ActionLink("Modified By", "ActiveShipments", new { sortOrder = ViewBag.ModifiedBySortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                    <th><b title="Sort By Modified Date">@Html.ActionLink("Modified Date", "ActiveShipments", new { sortOrder = ViewBag.ModifiedDateSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr onclick="edit('@item.Order.OrderCode');">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Order.OrderCode)
+                        </td>
+
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Bay.Product.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Bay.BayID)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShipmentStatu.Status)
+                        </td>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WeighBridge.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VehicleCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModifiedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModifiedDate)
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("ActiveShipments", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoCompleteActive", "Shipments"))",
+                data: { "term": request.term },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.length ; i++) {
+                    customer[i] = { label:data[i] };
+                }
+            }
+        });
+    response(customer);
+    }
+    });
+    function edit(id) {
+        var route = '@Url.Action("Index","Shipments")' + '?SearchString=' + id;
+        window.location.href = route;
+    }
+</script>

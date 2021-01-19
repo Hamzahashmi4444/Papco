@@ -1,0 +1,919 @@
+﻿@model PagedList.IPagedList<TLAS.Models.Shipment>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="~/Scripts/printThis.js"></script>
+</head>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/Common.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Shipment";
+}
+<hr />
+<div class="container hidden-print">
+    <div class="col-md-7">
+        <h2>Shipment</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm("Index", "Shipments", FormMethod.Get))
+            {
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @title = "Search By Order Code", @placeholder = "Order Code" })
+                            </div>
+                            <div class="col-md-1" style="margin-left:-23px;">
+                                <input type="submit" value="Search" class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </p>
+            }
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="btn-default">
+                        <th><b>@Html.ActionLink("Shipment ID", "Index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Vehicle Code", "Index", new { sortOrder = ViewBag.VehCodeSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Order Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</b></th>
+                        <th><b>@Html.ActionLink("Status", "Index")</b></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        string shipmentdate = null;
+                        try
+                        {
+                            if (item.ShipmentDate != null)
+                            {
+                                shipmentdate = item.ShipmentDate.Value.ToShortDateString();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            shipmentdate = null;
+                        }
+                        <tr onclick="edit('@item.ID','@item.IsManual','@item.AccessCardID','@item.ModifiedDate','@item.DeletedFlag','@item.CreatedDate','@item.ShipmentStatusID','@item.OrderID','@item.BayID','@item.BayName','@item.CustomerName','@item.VehicleCode','@item.DriverName','@item.DriverCNIC','@item.CarrierName','@shipmentdate','@item.ProductID','@item.VehicleCode','@item.Order.OrderQty','@item.Order.OrderCode');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VehicleCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Order.OrderCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShipmentStatu.Status)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+
+
+
+    @using (Html.BeginForm("Create", "Shipments", FormMethod.Post, new { @id = "formAll" }))
+    {
+        <div class="col-md-5">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "errorSummary" })
+            @Html.Label(" ", new { @id = "errorMessagesOnSave", Style = "color: red" })
+            <div class="form-group ">
+                <div class="btn-group col-md-offset-2">
+                    <button type="submit" class="btn btn-primary" id="save" disabled>Save</button>
+                    <button type="submit" class="btn btn-primary" id="close" onclick="closePressed();" disabled>Close</button>
+                    <button type="button" class="btn btn-primary" id="loadSlip" onclick="loadSlipPressed();" data-toggle="modal" data-target=".bootstrapmodal" disabled>Print LoadSlip</button>
+                    <button type="button" class="btn btn-primary" id="bol" onclick="BoLPressed();" data-toggle="modal" data-target=".bootstrapmodal1" disabled>Print BoL</button>
+                    <button type="button" class="btn btn-primary" id="bolDriver" onclick="BoLPressed();" data-toggle="modal" data-target=".bootstrapmodaldriverbol" disabled>Driver BoL</button>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                @Html.HiddenFor(m => Model.FirstOrDefault().ModifiedDate, new { @Value = System.DateTime.Now })
+                @Html.HiddenFor(m => Model.FirstOrDefault().ShipmentDate, new { @id = "dateShipment", @Value = "" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().ID, new { @id = "shipmentId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().ShipmentStatusID, new { @id = "shipmentStatusId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().ProductID, new { @id = "productId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().Order.OrderQty, new { @id = "odrQty" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().OrderID, new { @id = "odrId" })
+                @Html.HiddenFor(m => Model.FirstOrDefault().DriverCNIC, new { @id = "drvCNIC" })
+                <div class="form-group">
+                    <label for="custName" class="col-md-4 control-label">Customer Name</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CustomerName, new { htmlAttributes = new { @class = "form-control", @id = "custName", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="carrName" class="col-md-4 control-label">Carrier Name</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().CarrierName, new { htmlAttributes = new { @class = "form-control", @id = "carrName", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="custName" class="col-md-4 control-label">Vehicle Code</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().VehicleCode, new { htmlAttributes = new { @class = "form-control", @id = "vehCode", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="custName" class="col-md-4 control-label">Driver Name</label>
+                    <div class="col-md-4">
+                        @Html.EditorFor(m => Model.FirstOrDefault().DriverName, new { htmlAttributes = new { @class = "form-control", @id = "drvName", @readonly = "readonly" } })
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <label for="licDate" class="col-md-4 control-label">Date of Shipment</label>
+                        <div class="col-md-4">
+                            @{
+                                string shipmentdatereuse = null;
+                                try
+                                {
+                                    if(Model.FirstOrDefault().ShipmentDate != null)
+                                {
+                                    shipmentdatereuse = Convert.ToString(Model.FirstOrDefault().ShipmentDate.Value.ToShortDateString());
+                                }
+                                }
+                                catch(Exception)
+                                {
+                                    shipmentdatereuse = null;
+                                }
+
+                            }
+                            @Html.EditorFor(m => Model.FirstOrDefault().ShipmentDate, new { htmlAttributes = new { @class = "form-control", @id = "dateShipment", @Value = shipmentdatereuse } })
+                            @Html.ValidationMessageFor(m => Model.FirstOrDefault().ShipmentDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <label for="compSelect" class="col-md-4 control-label">Bay No<b style="color:red">*</b></label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().BayID, ViewData["BayID"] as SelectList, new { @class = "form-control", @id = "bayName" })
+                        @*@Html.ValidationMessageFor(m => Model.FirstOrDefault().BayID, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="compSelect" class="col-md-4 control-label">RFID Card No<b style="color:red">*</b></label>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => Model.FirstOrDefault().AccessCardID, ViewData["AccessCardID"] as SelectList, new { @class = "form-control", @id = "cardNo" })
+                        @*@Html.ValidationMessageFor(m => Model.FirstOrDefault().AccessCardID, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-md-4 control-label">Manual Entry</label>
+                    <div class="col-md-4">
+                        @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
+                            @Html.CheckBoxFor(m => Model.FirstOrDefault().IsManual, new { @id = "manualEntry", htmlAttributes = new { @class = "form-control" } })
+                        }
+                        else
+                        {
+                            @Html.CheckBoxFor(m => Model.FirstOrDefault().IsManual, new { @id = "manualEntry", @disabled = "disabled", htmlAttributes = new { @class = "form-control" } })
+                        }
+                        @Html.Label(" ")
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="container">
+            <div class="col-md-11">
+                <h2>Compartment</h2>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-bordered table-hover table-striped">
+                        <thead>
+                            <tr class="btn-primary">
+                                <th><b>Compartment Code</b></th>
+                                <th><b>Order Code</b></th>
+                                <th><b>Product</b></th>
+                                <th><b>Ordered Qty</b></th>
+                                <th><b>Capacity</b></th>
+                                <th><b>Planned Qty</b></th>
+                                <th><b>Actual Qty</b></th>
+                                <th><b>Pre Dip</b></th>
+                                <th><b>Post Dip</b></th>
+                                <th><b>Difference</b></th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="compTable">
+
+                            @*<tr>
+                                    <td><span></span></td>
+                                    <td><span></span></td>
+                                    <td><span></span></td>
+                                </tr>*@
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+
+@Html.Partial("_LoadSlip")
+
+
+@Html.Partial("_BOL")
+
+@Html.Partial("_DriverBOL")
+
+
+
+
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+
+
+<style type="text/css" media="print">
+    body * {
+        visibility: hidden;
+    }
+
+    #printLoadingSlip, #printLoadingSlip * {
+        visibility: visible;
+    }
+
+
+    #printBOL, #printBOL * {
+        visibility: visible;
+    }
+
+    .BOL-content:before {
+        background-repeat: no-repeat;
+        z-index: -99999;
+        width: 740px;
+        z-index: -99999;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    .LoadingSlip-content:before {
+        content: url(../../Content/Images/LoadSlip.png);
+        background-repeat: no-repeat;
+        z-index: -99999;
+        width: 740px;
+        z-index: -99999;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+
+
+    #lbl_Ship {
+        padding-top: -1px;
+    }
+</style>
+
+
+<style type="text/css">
+    td {
+        border: 1px solid transparent;
+    }
+</style>
+
+
+
+<script type="text/javascript">
+
+    function OnClickEventForPRE_POST(compPreDip, compPostDip, compDelta) {
+        $("#" + compDelta.id).val($("#" + compPostDip.id).val() - $("#" + compPreDip.id).val());
+        if ($("#" + compDelta.id).val() < 0)
+        {
+            $("#" + compDelta.id).css('color', 'red');
+        }
+        if ($("#" + compDelta.id).val() > 0)
+        {
+            $("#" + compDelta.id).css('color', 'black');
+        }
+    }
+
+    $("#SearchString").autocomplete({
+
+        source: function (request, response) {
+
+            var customer = new Array();
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("GetAutoCompleteIndex", "Shipments"))",
+                data: { "term": request.term },
+            success: function (data) {
+                debugger;
+                for (var i = 0; i < data.length ; i++) {
+                    customer[i] = { label:data[i] };
+                }
+            }
+        });
+    response(customer);
+    }
+    });
+
+    $(function () {
+
+
+        //$('#dateShipment').datepicker({
+        //    dateFormat: 'mm/dd/yy',
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-15:+15"
+        //});
+        $('#custName').val("")
+        $('#vehCode').val("")
+        $('#drvName').val("")
+        //$('#dateShipment').val("")
+        $('#carrName').val("")
+        //////////////////////////////////////////////////////Custom Validation/////////////////////////////////////////////////////////////
+
+        $('#formAll').validate({
+            errorClass: "text-danger",
+            debug: true,
+            rules: {
+                AccessCardID: {
+                    required: true,
+                },
+                BayID: {
+                    required: true,
+                }
+            },
+            messages: {
+                AccessCardID: {
+                    required: "Access Card is required."
+                },
+                BayID: {
+                    required: "Bay is required."
+                }
+            }
+        });
+
+        ///////////////////////////////////////////////////////submit ob click event/////////////////////////////////////////////////////////////////
+        $(document).on('click', 'form button[type=submit]', function (e) {
+            $("#errorMessagesOnSave").text(" ");
+            var isValid = $('#formAll').valid();
+            if (!isValid) {
+                e.preventDefault(); //prevent the default action
+                return;
+            }
+            else if ($('#compTable tr').length == 0)
+            {
+                $("#errorMessagesOnSave").text("No Compartment found");
+                e.preventDefault();
+                return;
+            }
+            else if (e.target.id == "close")
+            {
+
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                for (var i = 0; i < $('#compTable tr').length; i++) {
+                    var plannedQty = parseInt($('#compPlannedQty' + i).val())
+                    var actualQty = parseInt($('#compActualQty' + i).val())
+                    if (plannedQty != 0 && isNaN(actualQty)) {
+                        $("#errorMessagesOnSave").text("Actual Quantity cannot be null, Check manual entry checkbox and correct the values");
+                        e.preventDefault();
+                        return;
+                    }
+                }
+                if ($("#errorMessagesOnSave").text() == " ") {
+                    $("#shipmentStatusId").val(5);
+                }
+            }
+            else if ($('#compTable tr').length > 0) {
+                    for (var i = 0; i < $('#compTable tr').length; i++) {
+                        $("#compPlannedQty" + i).rules("add", {
+                            required:true,
+                            digits: true,
+                            messages: {
+                                required : "Only digits allowed"
+                            }
+                        });
+                    }
+                //////////////////////////////////////////////////////////////////////////////
+                    if ($("#shipmentStatusId").val() == 3)
+                    {
+                        for (var i = 0; i < $('#compTable tr').length; i++) {
+                            $("#compManualPostDip" + i).rules("add", {
+                                required: true,
+                                digits: true,
+                                messages: {
+                                    required: "Required"
+                                }
+                            });
+                        }
+
+                        for (var i = 0; i < $('#compTable tr').length; i++) {
+                            $("#compManualPreDip" + i).rules("add", {
+                                required: true,
+                                digits: true,
+                                messages: {
+                                    required: "Required"
+                                }
+                            });
+                        }
+                    }
+                //////////////////////////////////////////////////////////////////////////////
+                    var newValid = $('#formAll').valid();
+                        if (!newValid) {
+                            e.preventDefault(); //prevent the default action
+                            return;
+                    }
+                        else {
+                            var sumOfPlannedQty = 0;
+                            for (var i = 0; i < $('#compTable tr').length; i++) {
+                                    sumOfPlannedQty = sumOfPlannedQty + parseInt($('#compPlannedQty' + i).val());
+                                    if (parseInt($('#compPlannedQty' + i).val()) > parseInt($('#compCapacity' + i).val())) {
+                                        $("#errorMessagesOnSave").text("Planned Quantity must not be greater than the compartment capacity");
+                                        e.preventDefault();
+                                        return;
+                                }
+
+                            }
+                            if (sumOfPlannedQty != parseInt($('#odrQty').val())) {
+                                $("#errorMessagesOnSave").text("Sum of Planned Quantity must be equal to the ordered Quantity");
+                                e.preventDefault();
+                                return;
+                            }
+
+                            $("#errorMessagesOnSave").text(" ");
+                    }
+
+            }
+        });
+
+        $("#formAll").submit(function (e) {
+            e.preventDefault();
+            if($("#errorMessagesOnSave").text() != " ")
+            {
+                e.preventDefault();
+                return;
+            }
+            else {
+                e.preventDefault(); //prevent default form submit
+
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("cardAssigned", "Shipments")',
+                    data: { cardId: $("#cardNo").val() },
+                    datatype: "json",
+                    traditional: true
+                }).done(function myfunction(data) {
+                    try {
+                        if (data == false) {
+                            if ($("#manualEntry").is(":checked")) {
+                                $("#shipmentStatusId").val(4);
+                            }
+                            $("#errorMessagesOnSave").text(" ");
+                            $("#formAll").unbind('submit').submit();
+
+                        }
+                        else {
+                            if (data == $("#shipmentId").val()) {
+                                if ($("#manualEntry").is(":checked")) {
+                                    $("#shipmentStatusId").val(4);
+                                }
+                                $("#errorMessagesOnSave").text(" ");
+                                $("#formAll").unbind('submit').submit();
+                            }
+                            else {
+                                $("#errorMessagesOnSave").text("Card Already in use");
+                            }
+
+                        }
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+
+                })
+            }
+        });
+        ////////////////////////////////////form submit//////////////////////////////////////////////////////
+        $('#bayName').change(function () {
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectCard", "Shipments")',
+                data: { bayId: $("#bayName").val() },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#cardNo').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#cardNo').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                }
+            })
+        })
+
+        //////////////////////////////////////////////////card number on change end/////////////////////////////////////////////////
+
+
+    });
+
+    function edit(id, isManual, accessCard, modifiedDate, DeletedFlag, createdDate, shipStatusId, orderId, bayId, bayName, customerName, vehicleCode, driverName, driverCnic, carrierName, shipmentDate, productId, vehicleId, odrQty, odrCode) {
+
+
+        $("#errorMessagesOnSave").text(" ");
+
+        //////////////////////////////////////////////////////////////////////bay///////////////////////////////////////////////////////////////////////////////////
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("SelectBay", "Shipments")',
+            data: { prdId: productId },
+            datatype: "json",
+            traditional: true
+        }).done(function myfunction(data) {
+            $('#bayName').empty();
+            for (var i = 0; i < data.length; i++) {
+                $('#bayName').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+            }
+            if (bayId != 0) {
+                $("#bayName").val(bayId);
+            }
+            else {
+                $("#bayName").val(data[0].Value);
+                bayId = data[0].Value;
+            }
+            //////////////////////////////////////////////////////card///////////////////////////////////////////////////////////
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectCard", "Shipments")',
+                data: {
+                    bayId: bayId
+                },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#cardNo').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#cardNo').append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                }
+                $("#cardNo").val(accessCard);
+            })
+        })
+        ////////////////////////////////////////////////////////////////////////end bay//////////////////////////////////////////////////////////////////////////////////////
+
+
+        $("#shipmentId").val(id)
+
+        $("#shipmentStatusId").val(shipStatusId)
+        $("#productId").val(productId)
+        $("#odrQty").val(odrQty)
+        $("#odrId").val(orderId)
+        $("#custName").val(customerName)
+        $("#vehCode").val(vehicleCode)
+        $("#drvName").val(driverName)
+        $("#drvCNIC").val(driverCnic)
+        $("#carrName").val(carrierName)
+
+        $("#dateShipment").val(shipmentDate)
+
+        if (isManual == "onclick") {
+            $("#manualEntry").prop('checked', true);
+        }
+        else {
+            $("#manualEntry").prop('checked', false);
+        }
+
+
+
+
+
+        var prd;
+        if (productId == 1) {
+            prd = "Mogas"
+        }
+        else {
+            prd = "HSD"
+        }
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("compartmentPlanning", "Shipments")',
+            data: {
+                vehicleId: vehicleId,
+                id: id
+            },
+            datatype: "json",
+            traditional: true
+        }).done(function myfunction(data) {
+            if (data == false) {
+                $('#compTable').empty();
+            }
+            else {
+                if (shipStatusId == 3 ) {
+                    $('#compTable').empty();
+                    if (data[0].isCreatedLI == true) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><input type="hidden" class="form-control" name="compId' + i + '" id="compId' + i + '" value= "' + data[i].CompIdLI + '" readonly /><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].CompCodeLI + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + data[i].OrderedQtyLI + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].CapacityLI + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" value= "' + data[i].PlannedQtyLI + '" readonly/></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + data[i].ActualQtyLI + '" readonly /></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" onkeyup="OnClickEventForPRE_POST(compManualPreDip' + i + ', compManualPostDip' + i + ', compDelta' + i + ')"  /></td><td><input type="number" class="form-control clscompManualPostDip" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" onkeyup="OnClickEventForPRE_POST(compManualPreDip' + i + ', compManualPostDip' + i + ', compDelta' + i + ')"  /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].Text + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + odrQty + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].Value + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" /></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + 0 + '" readonly /></td></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                }else if (shipStatusId == 5) {
+                    $('#compTable').empty();
+                    if (data[0].isCreatedLI == true) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><input type="hidden" class="form-control" name="compId' + i + '" id="compId' + i + '" value= "' + data[i].CompIdLI + '" readonly /><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].CompCodeLI + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + data[i].OrderedQtyLI + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].CapacityLI + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" value= "' + data[i].PlannedQtyLI + '" readonly/></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + data[i].ActualQtyLI + '" readonly /></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].Text + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + odrQty + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].Value + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" /></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + 0 + '" readonly /></td></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                } else if (shipStatusId == 1) {
+                    $('#compTable').empty();
+                    if (data[0].isCreatedLI == true) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><input type="hidden" class="form-control" name="compId' + i + '" id="compId' + i + '" value= "' + data[i].CompIdLI + '" readonly /><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].CompCodeLI + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + data[i].OrderedQtyLI + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].CapacityLI + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" value= "' + data[i].PlannedQtyLI + '" readonly/></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + data[i].ActualQtyLI + '" readonly /></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < data.length; i++) {
+                            if (productId == 1)
+                            {
+                                $('#compTable').append('<tr class="item"><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].Text + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + odrQty + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].Value + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" value= "' + odrQty + '"/></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + 0 + '" readonly /></td></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                            }else{
+                                $('#compTable').append('<tr class="item"><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].Text + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + odrQty + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].Value + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '"/></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + 0 + '" readonly /></td></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                            }
+                        }
+                    }
+                }
+                else {
+                    $('#compTable').empty();
+                    if (data[0].isCreatedLI == true) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><input type="hidden" class="form-control" name="compId' + i + '" id="compId' + i + '" value= "' + data[i].CompIdLI + '" readonly /><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].CompCodeLI + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + data[i].OrderedQtyLI + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].CapacityLI + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" value= "' + data[i].PlannedQtyLI + '" /></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + data[i].ActualQtyLI + '" readonly /></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#compTable').append('<tr class="item"><td><input type="text" class="form-control" name="compCode' + i + '" id="compCode' + i + '" value= "' + data[i].Text + '" readonly /></td><td><input type="text" class="form-control" name="compOdrCode' + i + '" id="compOdrCode' + i + '" value= "' + odrCode + '" readonly /></td><td><input type="text" class="form-control" name="compPrd' + i + '" id="compPrd' + i + '" value= "' + prd + '" readonly /></td><td><input type="text" class="form-control" name="compOdrQty' + i + '" id="compOdrQty' + i + '" value= "' + odrQty + '" readonly /></td><td><input type="text" class="form-control" name="compCapacity' + i + '" id="compCapacity' + i + '" value= "' + data[i].Value + '" readonly /></td><td><input type="number" class="form-control" name="compPlannedQty' + i + '" id="compPlannedQty' + i + '" /></td><td><input type="text" class="form-control" name="compActualQty' + i + '" id="compActualQty' + i + '" value= "' + 0 + '" readonly /></td></td><td><input type="number" class="form-control" name="compManualPreDip' + i + '" id="compManualPreDip' + i + '" value= "' + data[i].PreDip + '" readonly /></td><td><input type="number" class="form-control" name="compManualPostDip' + i + '" id="compManualPostDip' + i + '" value= "' + data[i].PostDip + '" readonly /></td><td><input type="number" class="form-control" name="compDelta' + i + '" id="compDelta' + i + '" value= "' + data[i].Delta + '" readonly/></td></tr>');
+                        }
+                    }
+                }
+
+                for (var i = 0; i < data.length; i++) {
+
+                }
+
+            }
+        })
+
+
+
+
+        /////////////////////////////////finally unlock and lock buttons////////////////////////////////////////////
+        switch (shipStatusId) {
+            case "1":
+                $("#save").prop("disabled", false);
+                $("#loadSlip").prop("disabled", true);
+                $("#close").prop("disabled", true);
+                $("#bol").prop("disabled", true);
+                $("#bolDriver").prop("disabled", true);
+                break;
+            case "2":
+                $("#save").prop("disabled", false);
+                $("#loadSlip").prop("disabled", false);
+                $("#close").prop("disabled", true);
+                $("#bol").prop("disabled", true);
+                $("#bolDriver").prop("disabled", true);
+
+                break;
+            case "3":
+                $("#save").prop("disabled", false);
+                $("#loadSlip").prop("disabled", false);
+                $("#close").prop("disabled", false);
+                $("#bol").prop("disabled", true);
+                $("#bolDriver").prop("disabled", true);
+                break;
+            case "4":
+                $("#save").prop("disabled", true);
+                $("#loadSlip").prop("disabled", true);
+                $("#close").prop("disabled", true);
+                $("#bol").prop("disabled", true);
+                $("#bolDriver").prop("disabled", true);
+                break;
+            case "5":
+                $("#save").prop("disabled", true);
+                $("#loadSlip").prop("disabled", true);
+                $("#close").prop("disabled", true);
+                $("#bol").prop("disabled", false);
+                $("#bolDriver").prop("disabled", false);
+                break;
+
+        }
+        if (isManual == "onclick" && shipStatusId != 5) {
+            $("#save").prop("disabled", true);
+            $("#loadSlip").prop("disabled", true);
+            $("#close").prop("disabled", true);
+            $("#bol").prop("disabled", true); // changed against bug fix 77
+            $("#bolDriver").prop("disabled", true);
+        }
+
+
+        //////////////////////////////////////////////print slips //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //var date = new Date();
+        //date = date.toLocaleString('en-US');
+
+        var d = new Date();
+        var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var date = d.getDate() + " " + month[d.getMonth()] + ", " + d.getFullYear();
+        var time = d.toLocaleTimeString().toLowerCase();
+        var shipdate = id + "(" + date + " " + time + ")";
+
+        $("#lbl_Ship").text(shipdate);
+        $("#lbl_Cust").text(customerName);
+        $("#lbl_Drvr").text(driverName);
+        $("#lbl_RFID").text(accessCard);
+        $("#lbl_Vno").text(vehicleCode);
+        $("#lbl_Ocode").text(odrCode);
+        $("#lbl_Prod").text(prd);
+        $("#lbl_Qty").text(odrQty);
+        $("#lbl_Bay").text(bayId);
+        //////////////////////////////////////
+        $("#lbl_Ship1").text(shipmentDate);
+        $("#lbl_Cust1").text(customerName);
+        $("#lbl_Drvr1").text(driverName);
+        ////////////////////////////////////
+
+        ////////////////////////////////////////////////BoL Slip////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////
+        $("#lbl_Shipbol").text(id);
+        $("#lbl_Custbol").text(customerName);
+        $("#lbl_Vehbol").text(vehicleCode);
+        $("#lbl_Shipdriverbol").text(id);
+        $("#lbl_Custdriverbol").text(customerName);
+        $("#lbl_Vehdriverbol").text(vehicleCode);
+        ////////////////////////////////////
+        //////////////////////////////////////
+        var dDate = new Date(shipmentDate);
+        var monthDDatebol = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var ddDateBol = dDate.getDate() + " " + month[dDate.getMonth()] + ", " + dDate.getFullYear();
+        $("#lbl_DDatebol").text(ddDateBol);
+        $("#lbl_DDatedriverbol").text(ddDateBol);
+        //////////////////////////////////////////////////////////////////////////
+        var dEntTmebol = new Date(createdDate);
+        var monthEntTmebol = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var dateEntTmebol = dEntTmebol.getDate() + " " + month[dEntTmebol.getMonth()] + ", " + dEntTmebol.getFullYear();
+        var timeEntTmebol = dEntTmebol.toLocaleTimeString().toLowerCase();
+        ///
+        $("#lbl_EntTmebol").text(dateEntTmebol + " " + timeEntTmebol);
+        $("#lbl_EntTmedriverbol").text(dateEntTmebol + " " + timeEntTmebol);
+        ///////////////////////////////////////////////////////////////////////////
+        var dExtTimebol = new Date(modifiedDate);
+        var monthExtTimebol = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var dateExtTimebol = dExtTimebol.getDate() + " " + month[dExtTimebol.getMonth()] + ", " + dExtTimebol.getFullYear();
+        var timeExtTimebol = dExtTimebol.toLocaleTimeString().toLowerCase();
+        ///
+        $("#lbl_ExtTimebol").text(dateExtTimebol + " " + timeExtTimebol);
+        $("#lbl_ExtTimedriverbol").text(dateExtTimebol + " " + timeExtTimebol);
+        ////////////////////////////////////
+        $("#lbl_OdrCdebol").text(odrCode);
+        $("#lbl_prodbol").text(prd);
+        $("#lbl_Qtybol").text(odrQty);
+        $("#lbl_OdrCdedriverbol").text(odrCode);
+        $("#lbl_proddriverbol").text(prd);
+        $("#lbl_Qtydriverbol").text(odrQty);
+        ////////////////////////////////////
+
+
+
+
+
+    }
+    //////End of edit function////////
+    function BoLPressed() {
+
+        for (k = 1; k < 9; k++) {
+            $('#lbl_Compidbol' + k).text(" ");
+            $('#lbl_CActQtybol' + k).text(" ");
+            $('#lbl_CPlnQtybol' + k).text(" ");
+        }
+        var countTr = $('#compTable tr').length;
+        var j = 0;
+        var sumOfPlannedQty = 0;
+        var sumOfActualQty = 0;
+        var sumOfManualQty = 0;
+        for (var i = 0; i < countTr; i++) {
+
+
+            if ($.isNumeric(parseInt($('#compPlannedQty' + i).val()))) {
+                sumOfActualQty = sumOfActualQty + parseInt($('#compActualQty' + i).val());
+                sumOfPlannedQty = sumOfPlannedQty + parseInt($('#compPlannedQty' + i).val());
+                j++;
+                $('#lbl_Compidbol' + j).text(parseInt($('#compCode' + i).val()))
+                $('#lbl_CActQtybol' + j).text(parseInt($('#compActualQty' + i).val()))
+                console.log($('#compManualPostDip' + i).val());
+                $('#lbl_PostDip' + i).text($('#compManualPostDip' + i).val());
+                console.log($("#compManualPreDip" + i).val()); +
+                $('#lbl_PreDip' + i).text($('#compManualPreDip' + i).val());
+                //$('#lbl_Comp' + j).text(parseInt($('#compCode' + i).val()))
+                $('#lbl_CPlnQtybol' + j).text(parseInt($('#compPlannedQty' + i).val()))
+
+
+            }
+            if ($.isNumeric(parseInt($('#compManualPostDip' + i).val()))) {
+                sumOfManualQty = sumOfManualQty + parseInt($('#compManualPostDip' + i).val());
+            }
+        }
+        $("#lbl_PlnQtybol").text(sumOfPlannedQty);
+        $("#lbl_ActQtybol").text(sumOfActualQty);
+        $("#lbl_ManualQtybol").text(sumOfManualQty);
+        $("#lbl_PlnQtydriverbol").text(sumOfPlannedQty);
+        $("#lbl_ActQtydriverbol").text(sumOfActualQty);
+        $("#lbl_ManualQtydriverbol").text(sumOfManualQty);
+
+        ///////////////////////////////////////////////////////////added by umar on 21dec2016/////////////////////////////////////
+        @*if ($("#productId").val() == 1) {
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("WeighOutValue", "Shipments")',
+                data: { ShipmentID: $("#shipmentId").val() },
+                datatype: "json",
+                traditional: true
+            }).done(function myfunction(data) {
+                $('#lbl_ManualQtybol').text("N/A");
+                if (data.length > 1) {
+                    $('#lbl_ManualQtybol').text(data);
+                }
+            })
+        }*@
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //lbl_Compidbol2
+        //lbl_CPlnQtybol2
+        //lbl_CActQtybol2
+    }
+    function loadSlipPressed() {
+        for (k = 1; k < 9; k++) {
+            $('#lbl_Comp' + k).text(" ");
+            $('#lbl_CompPQty' + k).text(" ");
+        }
+
+        var countTr = $('#compTable tr').length;
+        var j = 0;
+        for (var i = 0; i < countTr; i++) {
+            if ($.isNumeric(parseInt($('#compPlannedQty' + i).val()))) {
+                j++;
+                $('#lbl_Comp' + j).text(parseInt($('#compCode' + i).val()))
+                $('#lbl_CompPQty' + j).text(parseInt($('#compPlannedQty' + i).val()))
+
+
+            }
+        }
+
+    }
+    function closePressed() {
+        //$("#shipmentStatusId").val(5);
+
+
+
+    }
+
+
+
+
+</script>
+
+
+
+
+
